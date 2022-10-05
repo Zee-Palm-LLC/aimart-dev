@@ -7,6 +7,8 @@ class CustomColors {
   static Color kBackground = Color(0xffFAFBFE);
   static Color kGrey = Color(0xff848FAC);
    static Color kfullWhite = Color(0xffFFFFFF);
+   static Color kalert = Color(0xffE04F33);
+   
 
 
 }

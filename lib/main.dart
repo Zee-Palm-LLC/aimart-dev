@@ -1,4 +1,5 @@
 import 'package:aimart_dev/app/modules/home/bindings/home_binding.dart';
+import 'package:aimart_dev/app/modules/home/views/landing_screen/landing_screen.dart';
 import 'package:aimart_dev/app/modules/home/views/profile/my_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         defaultTransition: Transition.rightToLeft,
         initialBinding: HomeBinding(),
-        home: const ProfileScreen(),
+        home: LandingPage(),
       ),
     );
   }
