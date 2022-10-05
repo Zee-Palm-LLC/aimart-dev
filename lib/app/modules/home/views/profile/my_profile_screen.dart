@@ -1,3 +1,4 @@
+import 'package:aimart_dev/app/modules/home/widgets/appbar/primary_appbar.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -5,6 +6,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: primaryAppbar(title: 'Profile'),
+    );
   }
 }

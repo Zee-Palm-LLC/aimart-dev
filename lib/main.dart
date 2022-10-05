@@ -9,6 +9,8 @@ import 'app/data/constants/theme.dart';
 
 void main() async {
   runApp(const MyApp());
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   SystemChrome.setSystemUIOverlayStyle(defaultOverlay);
 }
 
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
           );
         },
         title: 'Aimart',
-        //  theme: mainTheme,
+        theme: mainTheme,
         debugShowCheckedModeBanner: false,
         defaultTransition: Transition.rightToLeft,
         initialBinding: HomeBinding(),
