@@ -52,7 +52,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
               },
             ),
           ),
-          SizedBox(height: 62.h),
+          const Spacer(),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 28.w),
             child: Row(
@@ -97,7 +97,8 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                         : Text('Next', style: CustomTextStyles.kMedium16)),
               ],
             ),
-          )
+          ),
+          SizedBox(height: 20.h),
         ],
       ),
     );
