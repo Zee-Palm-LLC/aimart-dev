@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>396141656475-n9ceg81ihio2n2k363db6f54dk41rt0i.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.396141656475-n9ceg81ihio2n2k363db6f54dk41rt0i</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCMQUMCC1TViJ2PmqaK4SWTif48CQ-APN8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>396141656475</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.aimartDev</string>
+	<key>PROJECT_ID</key>
+	<string>ai-mart-4154b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ai-mart-4154b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:396141656475:ios:71f9f82c4f7389e380c93e</string>
+</dict>
+</plist>
