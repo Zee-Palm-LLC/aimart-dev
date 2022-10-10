@@ -16,7 +16,8 @@ class CustomListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
+      contentPadding: EdgeInsets.zero,
+      minLeadingWidth: 10.w,
       leading: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -24,7 +25,8 @@ class CustomListTile extends StatelessWidget {
         ],
       ),
       title: Text(text,
-          style: CustomTextStyles.kBold16.copyWith(color: CustomColors.kBlack)),
+          style: CustomTextStyles.kBold16
+              .copyWith(color: CustomColors.kDarkBblue)),
       trailing: SvgPicture.asset(CustomAssets.karrowForward),
     );
   }

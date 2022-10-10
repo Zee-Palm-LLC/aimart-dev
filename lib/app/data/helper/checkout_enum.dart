@@ -1,0 +1,1 @@
+enum Checkout { selectPaymentmethod, cardMethod }

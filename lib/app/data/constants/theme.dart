@@ -9,20 +9,20 @@ ThemeData mainTheme = ThemeData(
     textTheme: GoogleFonts.poppinsTextTheme(),
     primaryColor: CustomColors.kPrimary,
     primarySwatch: Colors.blue,
-    scaffoldBackgroundColor: CustomColors.kBackground,
+    scaffoldBackgroundColor: CustomColors.kLightBackground,
     textSelectionTheme: TextSelectionThemeData(
         cursorColor: CustomColors.kPrimary,
         selectionColor: CustomColors.kPrimary),
     buttonTheme: ButtonThemeData(buttonColor: CustomColors.kPrimary),
     appBarTheme: AppBarTheme(
-      iconTheme: IconThemeData(color: CustomColors.kBlack),
+      iconTheme: IconThemeData(color: CustomColors.kDarkBblue),
       color: CustomColors.kBackground,
     ));
 
 SystemUiOverlayStyle defaultOverlay = const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.dark,
     statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.light,
-    systemNavigationBarIconBrightness: Brightness.dark,
-    systemNavigationBarDividerColor: Colors.transparent,
-    systemNavigationBarColor: Colors.transparent);
+    statusBarIconBrightness: Brightness.dark,
+    systemNavigationBarIconBrightness: Brightness.light,
+    systemNavigationBarDividerColor: Colors.black,
+    systemNavigationBarColor: Colors.black);

@@ -6,7 +6,12 @@ import 'package:get/get.dart';
 class PrimaryButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Widget child;
-  const PrimaryButton({Key? key, required this.onPressed, required this.child})
+  final Color color;
+  const PrimaryButton(
+      {Key? key,
+      required this.onPressed,
+      required this.child,
+      this.color = const Color(0xff4078E0)})
       : super(key: key);
 
   @override
@@ -14,11 +19,12 @@ class PrimaryButton extends StatelessWidget {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
             fixedSize: Size(Get.width, 50.h),
-            primary: CustomColors.kPrimary,
+            primary: color,
+            elevation: 0,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.r),
+              borderRadius: BorderRadius.circular(8.r),
             )),
-        onPressed: () {},
+        onPressed: onPressed,
         child: child);
   }
 }

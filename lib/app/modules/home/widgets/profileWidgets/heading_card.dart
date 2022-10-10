@@ -14,8 +14,8 @@ class HeadingCard extends StatelessWidget {
       height: 50.h,
       width: Get.width,
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      color: CustomColors.kDivider,
+      padding: EdgeInsets.symmetric(horizontal: 28.w),
+      color: Color(0xffEFF3FA),
       child: Text(
         heading,
         style: CustomTextStyles.kMedium16.copyWith(color: CustomColors.kGrey2),
