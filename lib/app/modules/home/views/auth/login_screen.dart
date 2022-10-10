@@ -1,21 +1,20 @@
 import 'package:aimart_dev/app/data/constants/constants.dart';
 import 'package:aimart_dev/app/modules/home/views/landingScreen/landing_screen.dart';
-import 'package:aimart_dev/app/modules/home/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../widgets/background_card.dart';
-import '../../widgets/textfields/custom_textFormField.dart';
+import '../../widgets/widgets.dart';
 import 'forgot_password.dart';
 import 'register_screen.dart';
 
+// ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
 
-  TextEditingController userNamecontroller = TextEditingController();
-  TextEditingController passwordcontroller = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   final globalKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -49,7 +48,7 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox(height: 12.h),
               CustomTextFormField(
-                controller: userNamecontroller,
+                controller: usernameController,
                 isPasswordField: false,
                 hintText: 'Enter your username..',
                 textInputAction: TextInputAction.none,
@@ -63,15 +62,12 @@ class LoginScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: 20.h),
-              Text(
-                'Password',
-                style: CustomTextStyles.kBold16.copyWith(
-                  color: CustomColors.kDarkTextColor,
-                ),
-              ),
+              Text('Password',
+                  style: CustomTextStyles.kBold16
+                      .copyWith(color: CustomColors.kDarkTextColor)),
               SizedBox(height: 12.h),
               CustomTextFormField(
-                controller: passwordcontroller,
+                controller: passwordController,
                 isPasswordField: true,
                 hintText: '***********',
                 textInputAction: TextInputAction.none,
@@ -80,7 +76,6 @@ class LoginScreen extends StatelessWidget {
                   if (value == "") {
                     return "This field can't be empty";
                   }
-
                   return null;
                 },
               ),
@@ -111,19 +106,11 @@ class LoginScreen extends StatelessWidget {
                         .copyWith(color: CustomColors.kfullWhite)),
               ),
               SizedBox(height: 24.h),
-              TextButton(
-                onPressed: () {},
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  minimumSize: Size(50.w, 30.h),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  'Or login with account',
-                  style: CustomTextStyles.kMedium12.copyWith(
-                      color: CustomColors.kGrey,
-                      decoration: TextDecoration.underline),
-                ),
+              Text(
+                "Or login with account",
+                style: CustomTextStyles.kBold12
+                    .copyWith(color: CustomColors.kGrey),
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 24.h),
               PrimaryButton(

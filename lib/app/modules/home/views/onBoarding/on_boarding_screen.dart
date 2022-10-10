@@ -1,4 +1,5 @@
 import 'package:aimart_dev/app/data/constants/color.dart';
+import 'package:aimart_dev/app/data/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -23,10 +24,16 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.kWhite,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        systemOverlayStyle: defaultOverlay,
+      ),
       body: Column(
         children: [
           SizedBox(
-            height: 770.h,
+            height: 670.h,
             child: PageView.builder(
               controller: controller,
               physics: const BouncingScrollPhysics(),
@@ -40,16 +47,18 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
               itemBuilder: (context, index) {
                 return OnboardingWidget(
                   onBoarding: onBoardinglist[index],
+                  index: index,
                 );
               },
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 22.w),
-                child: AnimatedSmoothIndicator(
+          SizedBox(height: 62.h),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 28.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AnimatedSmoothIndicator(
                   activeIndex: currentIndex,
                   count: onBoardinglist.length,
                   effect: ExpandingDotsEffect(
@@ -62,38 +71,32 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                       dotColor: CustomColors.kGrey2,
                       activeDotColor: Colors.indigo),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(right: 64.w),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                          minimumSize: Size(173.w, 50.h),
-                          primary: CustomColors.kPrimary),
-                      onPressed: () {
-                        if (currentIndex == 2) {
-                          Get.offAll(
-                            () => LoginScreen(),
-                          );
-                        } else {
-                          currentIndex++;
-                          controller.nextPage(
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.ease);
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        minimumSize: Size(173.w, 50.h),
+                        primary: CustomColors.kPrimary),
+                    onPressed: () {
+                      if (currentIndex == 2) {
+                        Get.offAll(
+                          () => LoginScreen(),
+                        );
+                      } else {
+                        currentIndex++;
+                        controller.nextPage(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.ease);
 
-                          setState(() {});
-                        }
-                      },
-                      child: currentIndex == 2
-                          ? const Text('Get Started')
-                          : const Text('Next')),
-                ),
-              ),
-            ],
+                        setState(() {});
+                      }
+                    },
+                    child: currentIndex == 2
+                        ? Text('Get Started', style: CustomTextStyles.kMedium16)
+                        : Text('Next', style: CustomTextStyles.kMedium16)),
+              ],
+            ),
           )
         ],
       ),
