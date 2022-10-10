@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "396141656475",
+    "project_id": "ai-mart-4154b",
+    "storage_bucket": "ai-mart-4154b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396141656475:android:548599285f6a4f7380c93e",
+        "android_client_info": {
+          "package_name": "com.example.aimart_dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "396141656475-apnk5pjn4dqc0tnqad4kcnhslsn8lsuk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtpoS9WhfHnJd8tPRYTlw76yktdlnnz8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "396141656475-apnk5pjn4dqc0tnqad4kcnhslsn8lsuk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "396141656475-n9ceg81ihio2n2k363db6f54dk41rt0i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.aimartDev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
