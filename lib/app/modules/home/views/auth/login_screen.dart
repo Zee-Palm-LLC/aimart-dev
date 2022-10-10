@@ -54,8 +54,10 @@ class LoginScreen extends StatelessWidget {
                 textInputAction: TextInputAction.none,
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
-                  if (value!.isEmpty || value == "") {
+                  if (value!.isEmpty) {
                     return "This field can't be empty";
+                  } else if (!value.isEmail) {
+                    return 'Enter a valid email address';
                   }
 
                   return null;
@@ -75,6 +77,8 @@ class LoginScreen extends StatelessWidget {
                 validator: (value) {
                   if (value == "") {
                     return "This field can't be empty";
+                  } else if (value!.length < 6) {
+                    return 'Your password lenght must be greater than 6';
                   }
                   return null;
                 },
@@ -161,7 +165,6 @@ class LoginScreen extends StatelessWidget {
               style: CustomTextStyles.kMedium12.copyWith(
                 color: CustomColors.kGrey,
               )),
-          SizedBox(width: 5.w),
           TextButton(
             onPressed: () {
               Get.to(() => SignUpScreen());
