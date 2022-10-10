@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         defaultTransition: Transition.rightToLeft,
         initialBinding: HomeBinding(),
-        home: SplashScreen(),
+        home: const SplashScreen(),
       ),
     );
   }
