@@ -5,12 +5,14 @@ class UserModel {
   String? email;
   String? username;
   String? fullName;
+  String? profilePic;
   String? bio;
   UserModel({
     this.uid,
     this.email,
     this.username,
     this.fullName,
+    this.profilePic,
     this.bio,
   });
 
@@ -30,6 +32,9 @@ class UserModel {
     if(fullName != null){
       result.addAll({'fullName': fullName});
     }
+    if(profilePic != null){
+      result.addAll({'profilePic': profilePic});
+    }
     if(bio != null){
       result.addAll({'bio': bio});
     }
@@ -43,6 +48,7 @@ class UserModel {
       email: map['email'],
       username: map['username'],
       fullName: map['fullName'],
+      profilePic: map['profilePic'],
       bio: map['bio'],
     );
   }
