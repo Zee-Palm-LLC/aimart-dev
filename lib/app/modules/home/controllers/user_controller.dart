@@ -51,31 +51,15 @@ class UserController extends GetxController {
     super.onInit();
   }
 
-  Future<void> updateUserInfo(
-      {required String fullName,
-      required String userName,
-      required String email,
-      required String bio,
-      File? imageFile}) async {
+  Future<void> updateUserInfo({required UserModel userModel}) async {
     showLoadingDialog(message: 'Updating Profile');
     try {
-      String profilePic = '';
-      if (imageFile != null) {
-        profilePic = await FirebaseStorageServices.uploadToStorage(
-            file: imageFile, folderName: 'Users');
-      }
-      await db.usersCollection.doc(currentUid).update({
-        'fullName': fullName,
-        'username': userName,
-        'email': email,
-        'bio': bio,
-        'profilePic': profilePic
-      });
-      if (profilePic != '') {
-        await db.usersCollection.doc(currentUid).update({
-          'profilePic': profilePic,
-        });
-      }
+      // if (imageFile != null) {
+      //   profilePic = await FirebaseStorageServices.uploadToStorage(
+      //       file: imageFile, folderName: 'Users');
+      // }
+      await db.usersCollection.doc(currentUid).update(userModel.toMap());
+
       hideLoadingDialog();
       Get.back();
     } on Exception catch (e) {

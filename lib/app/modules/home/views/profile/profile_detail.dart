@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:optimized_cached_image/optimized_cached_image.dart';
 
 import '../../../../data/constants/constants.dart';
+import '../../../../services/firebase_storage.dart';
 import '../../widgets/widgets.dart';
 
 class ProfileDetailScreen extends StatefulWidget {
@@ -39,13 +41,33 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
               clipBehavior: Clip.none,
               alignment: Alignment.bottomCenter,
               children: [
-                CircleAvatar(
-                    radius: 70.r,
-                    backgroundImage: image == null
-                        ? NetworkImage(
-                            widget.user.profilePic!,
-                          )
-                        : FileImage(image!) as ImageProvider),
+                image == null
+                    ? OptimizedCacheImage(
+                        placeholder: (context, url) => CircleAvatar(
+                          radius: 70.r,
+                          backgroundColor: CustomColors.kDivider,
+                          child: Icon(Icons.person,
+                              color: Colors.black, size: 40.h),
+                        ),
+                        errorWidget: (context, url, error) => CircleAvatar(
+                          radius: 70.r,
+                          backgroundColor: CustomColors.kDivider,
+                          child:
+                              Icon(Icons.error, color: Colors.red, size: 40.h),
+                        ),
+                        fit: BoxFit.contain,
+                        imageUrl: widget.user.profilePic ?? '',
+                        imageBuilder: (context, imageProvider) {
+                          return CircleAvatar(
+                            radius: 70.r,
+                            backgroundImage: imageProvider,
+                          );
+                        },
+                      )
+                    : CircleAvatar(
+                        radius: 70.r,
+                        backgroundImage: FileImage(image!),
+                      ),
                 Positioned(
                   bottom: -20,
                   child: Container(
@@ -147,11 +169,15 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
           PrimaryButton(
               onPressed: () async {
                 await uc.updateUserInfo(
-                    fullName: _nameController.text,
-                    userName: _usernameController.text.trim(),
-                    email: _emailController.text.trim(),
-                    bio: _bioController.text,
-                    imageFile: image);
+                    userModel: widget.user.copyWith(
+                        fullName: _nameController.text,
+                        username: _usernameController.text.trim(),
+                        email: _emailController.text.trim(),
+                        bio: _bioController.text,
+                        profilePic: image != null
+                            ? await FirebaseStorageServices.uploadToStorage(
+                                file: image!, folderName: 'Users')
+                            : widget.user.profilePic));
               },
               child: Text("Save Changes", style: CustomTextStyles.kBold16))
         ],
@@ -166,9 +192,9 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
   }
 
   void initializeData() {
-    _nameController.text = widget.user.fullName!;
-    _usernameController.text = widget.user.username!;
-    _emailController.text = widget.user.email!;
-    _bioController.text = widget.user.bio!;
+    _nameController.text = widget.user.fullName ?? '';
+    _usernameController.text = widget.user.username ?? '';
+    _emailController.text = widget.user.email ?? '';
+    _bioController.text = widget.user.bio ?? '';
   }
 }
