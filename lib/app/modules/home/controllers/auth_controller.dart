@@ -6,6 +6,7 @@ import '../../../services/database_services.dart';
 import '../../../services/firebase_storage.dart';
 import '../models/user_model.dart';
 import '../widgets/widgets.dart';
+import 'user_controller.dart';
 
 class AuthController extends GetxController {
   final Rx<User?> _firebaseUser = Rx<User?>(null);
@@ -36,6 +37,7 @@ class AuthController extends GetxController {
       {required String email,
       required String password,
       required String username,
+      required String fullName,
       required String bio,
       required File? profilePic}) async {
     try {
@@ -48,7 +50,8 @@ class AuthController extends GetxController {
             isEmail: true,
             user: UserModel(
               uid: value.user!.uid,
-              fullName: username,
+              username: username,
+              fullName: fullName,
               bio: bio,
               email: value.user!.email,
               profilePic: '',
@@ -113,29 +116,35 @@ class AuthController extends GetxController {
   //     hideLoadingDialog();
   //   }
   // }
-  // Future<void> changePassword({
-  //   required String currentPassword,
-  //   required String newPassword,
-  // }) async {
-  //   User user = _auth.currentUser!;
-  //   final cred = EmailAuthProvider.credential(
-  //       email: user.email!, password: currentPassword);
-  //   user.reauthenticateWithCredential(cred).then((value) {
-  //     user.updatePassword(newPassword).then((_) {
-  //       Get.snackbar(
-  //         AppTexts.loading,
-  //         AppTexts.passwordChanged,
-  //         backgroundColor: Colors.white,
-  //       );
-  //     }).catchError((error) {
-  //       showErrorDialog(error);
-  //     });
-  //   }).catchError((err) {
-  //     showErrorDialog(err);
-  //   });
-  // }
+
+  //Change Password
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    User user = _auth.currentUser!;
+    final cred = EmailAuthProvider.credential(
+        email: user.email!, password: currentPassword);
+    user.reauthenticateWithCredential(cred).then((value) {
+      user.updatePassword(newPassword).then((_) {
+        Get.snackbar(
+          'Password Change',
+          'Your Password has been changed',
+        );
+        Get.back();
+      }).catchError((error) {
+        Get.snackbar('Error', error.toString());
+      });
+    }).catchError((err) {
+      Get.snackbar('Error', err.toString());
+    });
+  }
+
+  //Sign Out
   Future<void> signOut() async {
     await _auth.signOut();
-    hideLoadingDialog();
+    if (Get.isRegistered<UserController>()) {
+      Get.delete<UserController>();
+    }
   }
 }

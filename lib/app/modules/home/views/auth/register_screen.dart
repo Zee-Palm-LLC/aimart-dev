@@ -19,7 +19,8 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController usernamecontroller = TextEditingController();
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController bioController = TextEditingController();
@@ -89,9 +90,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       .copyWith(color: CustomColors.kDarkTextColor)),
               SizedBox(height: 12.h),
               CustomTextFormField(
-                controller: usernamecontroller,
+                controller: fullNameController,
                 isPasswordField: false,
                 hintText: 'Enter your name..',
+                textInputAction: TextInputAction.none,
+                keyboardType: TextInputType.text,
+                validator: (value) {
+                  if (value!.isEmpty || value == "") {
+                    return "This field can't be empty";
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 24.h),
+              Text('Username',
+                  style: CustomTextStyles.kBold16
+                      .copyWith(color: CustomColors.kDarkTextColor)),
+              SizedBox(height: 12.h),
+              CustomTextFormField(
+                controller: userNameController,
+                isPasswordField: false,
+                hintText: 'Enter your username..',
                 textInputAction: TextInputAction.none,
                 keyboardType: TextInputType.text,
                 validator: (value) {
@@ -210,7 +229,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ac.createUserWithEmailAndPassword(
                         email: emailController.text.trim(),
                         password: passwordController.text.trim(),
-                        username: usernamecontroller.text,
+                        fullName: fullNameController.text,
+                        username: userNameController.text,
                         profilePic: image!,
                         bio: bioController.text);
                   }
