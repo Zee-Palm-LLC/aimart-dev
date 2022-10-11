@@ -1,3 +1,5 @@
+import 'package:aimart_dev/app/modules/home/views/auth/login_screen.dart';
+import 'package:aimart_dev/app/modules/home/views/landingScreen/landing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

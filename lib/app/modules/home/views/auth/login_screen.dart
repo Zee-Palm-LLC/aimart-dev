@@ -122,7 +122,9 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 24.h),
               PrimaryButton(
                 color: CustomColors.kWhite,
-                onPressed: () {},
+                onPressed: () {
+                  ac.signInWithGoogle();
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

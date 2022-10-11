@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../../../services/database_services.dart';
 import '../../../services/firebase_storage.dart';
 import '../models/user_model.dart';
@@ -81,43 +82,42 @@ class AuthController extends GetxController {
     }
   }
 
-  // Future<void> signInWithGoogle() async {
-  //   showLoadingDialog(message: AppTexts.loading);
-  //   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-  //   if (googleUser != null) {
-  //     try {
-  //       final GoogleSignInAuthentication googleAuth =
-  //           await googleUser.authentication;
-  //       OAuthCredential credential = GoogleAuthProvider.credential(
-  //         accessToken: googleAuth.accessToken,
-  //         idToken: googleAuth.idToken,
-  //       );
-  //       UserCredential result = await _auth.signInWithCredential(credential);
-  //       User? user = result.user;
-  //       if (user != null) {
-  //         result.additionalUserInfo!.isNewUser
-  //             ? createFirebaseUser(
-  //                 isEmail: false,
-  //                 user: UserModel(
-  //                   uid: user.uid,
-  //                   userName: user.displayName,
-  //                   email: user.email,
-  //                   profilePic: user.photoURL,
-  //                 ))
-  //             : null;
-  //       }
-  //       hideLoadingDialog();
-  //       Get.back(); // to go to root
-  //     } on Exception catch (err) {
-  //       hideLoadingDialog();
-  //       showErrorDialog(err.toString());
-  //     }
-  //   } else {
-  //     hideLoadingDialog();
-  //   }
-  // }
+  Future<void> signInWithGoogle() async {
+    showLoadingDialog(message: "Signing In with Google");
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser != null) {
+      try {
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+        OAuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+        UserCredential result = await _auth.signInWithCredential(credential);
+        User? user = result.user;
+        if (user != null) {
+          result.additionalUserInfo!.isNewUser
+              ? createFirebaseUser(
+                  isEmail: false,
+                  user: UserModel(
+                    uid: user.uid,
+                    username: user.displayName,
+                    email: user.email,
+                    profilePic: user.photoURL,
+                  ))
+              : null;
+        }
+        hideLoadingDialog();
+        Get.back(); // to go to root
+      } on Exception catch (err) {
+        hideLoadingDialog();
+        Get.snackbar("Error", err.toString());
+      }
+    } else {
+      hideLoadingDialog();
+    }
+  }
 
-  //Change Password
   Future<void> changePassword({
     required String currentPassword,
     required String newPassword,
@@ -128,19 +128,15 @@ class AuthController extends GetxController {
     user.reauthenticateWithCredential(cred).then((value) {
       user.updatePassword(newPassword).then((_) {
         Get.snackbar(
-          'Password Change',
-          'Your Password has been changed',
-        );
-        Get.back();
+            'Password Changed', 'Your password has been changed successfully');
       }).catchError((error) {
-        Get.snackbar('Error', error.toString());
+        Get.snackbar("Error", error.toString());
       });
     }).catchError((err) {
-      Get.snackbar('Error', err.toString());
+      Get.snackbar("Error", err.toString());
     });
   }
 
-  //Sign Out
   Future<void> signOut() async {
     await _auth.signOut();
     if (Get.isRegistered<UserController>()) {
