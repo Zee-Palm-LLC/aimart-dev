@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/auth_controller.dart';
 import '../../widgets/widgets.dart';
 import 'forgot_password.dart';
 import 'register_screen.dart';
@@ -16,6 +17,8 @@ class LoginScreen extends StatelessWidget {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final globalKey = GlobalKey<FormState>();
+
+  AuthController ac = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,16 +44,14 @@ class LoginScreen extends StatelessWidget {
                     .copyWith(color: CustomColors.kGrey),
               ),
               SizedBox(height: 32.h),
-              Text(
-                'Username',
-                style: CustomTextStyles.kBold16
-                    .copyWith(color: CustomColors.kDarkTextColor),
-              ),
+              Text('Email',
+                  style: CustomTextStyles.kBold16
+                      .copyWith(color: CustomColors.kDarkTextColor)),
               SizedBox(height: 12.h),
               CustomTextFormField(
                 controller: usernameController,
                 isPasswordField: false,
-                hintText: 'Enter your username..',
+                hintText: 'Enter your email',
                 textInputAction: TextInputAction.none,
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
@@ -102,7 +103,9 @@ class LoginScreen extends StatelessWidget {
               PrimaryButton(
                 onPressed: () {
                   if (globalKey.currentState!.validate()) {
-                    Get.to(() => LandingPage());
+                    ac.signInWithEmailAndPassword(
+                        email: usernameController.text.trim(),
+                        password: passwordController.text);
                   }
                 },
                 child: Text('Login',

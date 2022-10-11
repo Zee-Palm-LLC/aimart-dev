@@ -6,6 +6,7 @@ import '../../../services/database_services.dart';
 import '../../../services/firebase_storage.dart';
 import '../models/user_model.dart';
 import '../widgets/widgets.dart';
+
 class AuthController extends GetxController {
   final Rx<User?> _firebaseUser = Rx<User?>(null);
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -17,6 +18,7 @@ class AuthController extends GetxController {
     update();
     super.onInit();
   }
+
   Future<void> signInWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
@@ -29,10 +31,12 @@ class AuthController extends GetxController {
       Get.snackbar('Error', err.toString());
     }
   }
+
   Future<void> createUserWithEmailAndPassword(
       {required String email,
       required String password,
       required String username,
+      required String bio,
       required File? profilePic}) async {
     try {
       showLoadingDialog(message: 'Creating Account');
@@ -45,6 +49,7 @@ class AuthController extends GetxController {
             user: UserModel(
               uid: value.user!.uid,
               fullName: username,
+              bio: bio,
               email: value.user!.email,
               profilePic: '',
             )).then((value) async {
@@ -63,6 +68,7 @@ class AuthController extends GetxController {
       Get.snackbar("Error", err.toString());
     }
   }
+
   Future<void> createFirebaseUser(
       {required UserModel user, required bool isEmail}) async {
     try {
@@ -71,6 +77,7 @@ class AuthController extends GetxController {
       Get.snackbar('Erro', err.toString());
     }
   }
+
   // Future<void> signInWithGoogle() async {
   //   showLoadingDialog(message: AppTexts.loading);
   //   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();

@@ -1,5 +1,6 @@
 import 'package:aimart_dev/app/data/constants/color.dart';
 import 'package:aimart_dev/app/data/constants/constants.dart';
+import 'package:aimart_dev/app/modules/home/views/auth/auth_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -81,7 +82,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                     onPressed: () {
                       if (currentIndex == 2) {
                         Get.offAll(
-                          () => LoginScreen(),
+                          () => AuthWrapper(),
                         );
                       } else {
                         currentIndex++;

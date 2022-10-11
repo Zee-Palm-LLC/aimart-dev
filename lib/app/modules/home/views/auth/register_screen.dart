@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:aimart_dev/app/modules/home/views/auth/otp_verify_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../data/constants/constants.dart';
+import '../../controllers/auth_controller.dart';
 import '../../widgets/widgets.dart';
 import 'login_screen.dart';
 
@@ -19,12 +19,13 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController userNamecontroller = TextEditingController();
+  TextEditingController usernamecontroller = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController bioController = TextEditingController();
   File? image;
   final globalKey = GlobalKey<FormState>();
+  AuthController ac = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       .copyWith(color: CustomColors.kDarkTextColor)),
               SizedBox(height: 12.h),
               CustomTextFormField(
-                controller: userNamecontroller,
+                controller: usernamecontroller,
                 isPasswordField: false,
                 hintText: 'Enter your name..',
                 textInputAction: TextInputAction.none,
@@ -206,7 +207,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               PrimaryButton(
                 onPressed: () {
                   if (globalKey.currentState!.validate()) {
-                    Get.to(() => OTPVerifyScreen());
+                    ac.createUserWithEmailAndPassword(
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
+                        username: usernamecontroller.text,
+                        profilePic: image!,
+                        bio: bioController.text);
                   }
                 },
                 child: Text('Register',
