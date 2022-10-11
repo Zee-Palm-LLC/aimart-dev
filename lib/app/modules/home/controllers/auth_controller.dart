@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../../services/database_services.dart';
@@ -91,6 +92,39 @@ class AuthController extends GetxController {
           idToken: googleAuth.idToken,
         );
         UserCredential result = await _auth.signInWithCredential(credential);
+        User? user = result.user;
+        if (user != null) {
+          result.additionalUserInfo!.isNewUser
+              ? createFirebaseUser(
+                  isEmail: false,
+                  user: UserModel(
+                    uid: user.uid,
+                    username: user.displayName,
+                    email: user.email,
+                    profilePic: user.photoURL,
+                  ))
+              : null;
+        }
+        hideLoadingDialog();
+        Get.back(); // to go to root
+      } on Exception catch (err) {
+        hideLoadingDialog();
+        Get.snackbar("Error", err.toString());
+      }
+    } else {
+      hideLoadingDialog();
+    }
+  }
+
+
+    Future<void> signInWithFacebook() async {
+    showLoadingDialog(message: "Signing In with Facebook");
+    final LoginResult? loginResult = await FacebookAuth.instance.login();
+    if (loginResult != null) {
+      try {
+         final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+      
+        UserCredential result = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
         User? user = result.user;
         if (user != null) {
           result.additionalUserInfo!.isNewUser

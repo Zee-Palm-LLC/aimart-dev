@@ -141,7 +141,9 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 16.h),
               PrimaryButton(
                 color: CustomColors.kWhite,
-                onPressed: () {},
+                onPressed: () {
+                  ac.signInWithFacebook();
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
