@@ -41,7 +41,7 @@ class ProfileScreen extends StatelessWidget {
                 child: Icon(Icons.error, color: Colors.red, size: 40.h),
               ),
               fit: BoxFit.contain,
-              imageUrl: user.profilePic!,
+              imageUrl: user.profilePic ?? '',
               imageBuilder: (context, imageProvider) {
                 return CircleAvatar(
                   radius: 70.r,
@@ -51,13 +51,13 @@ class ProfileScreen extends StatelessWidget {
             )),
             SizedBox(height: 20.h),
             Center(
-              child: Text(user.fullName!,
+              child: Text(user.fullName ?? '',
                   style: CustomTextStyles.kBold20
                       .copyWith(color: CustomColors.kDarkBblue)),
             ),
             SizedBox(height: 4.h),
             Center(
-              child: Text(user.bio!,
+              child: Text(user.bio ?? '',
                   style: CustomTextStyles.kMedium14
                       .copyWith(color: CustomColors.kGrey)),
             ),
