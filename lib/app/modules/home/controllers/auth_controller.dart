@@ -102,7 +102,7 @@ class AuthController extends GetxController {
                   isEmail: false,
                   user: UserModel(
                     uid: user.uid,
-                    username: user.displayName,
+                    fullName: user.displayName,
                     email: user.email,
                     profilePic: user.photoURL,
                   ))
@@ -152,6 +152,7 @@ class AuthController extends GetxController {
   
   Future<void> signOut() async {
     await _auth.signOut();
+    await GoogleSignIn().signOut();
     if (Get.isRegistered<UserController>()) {
       Get.delete<UserController>();
     }
