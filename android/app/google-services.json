@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "396141656475-84586d1m4m8khir9095r29cilukidc2f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aimart_dev",
+            "certificate_hash": "cc49377b1adc70f891949ffaa19d418fb395dbd0"
+          }
+        },
+        {
+          "client_id": "396141656475-nnu1850l7rm31lfive7b75k66d7m4n8g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aimart_dev",
+            "certificate_hash": "118e9b47f6a8061b6cff2ebf6b0daa84337e1320"
+          }
+        },
+        {
           "client_id": "396141656475-apnk5pjn4dqc0tnqad4kcnhslsn8lsuk.apps.googleusercontent.com",
           "client_type": 3
         }
