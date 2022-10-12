@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -121,32 +122,33 @@ class AuthController extends GetxController {
 
   Future<void> signInWithFacebook() async {
     showLoadingDialog(message: "Signing In with Facebook");
-     final LoginResult? loginResult = await FacebookAuth.instance.login();
-    if (loginResult != null) {
-      try {
-        final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
-        UserCredential result = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-        User? user = result.user;
-        if (user != null) {
-          result.additionalUserInfo!.isNewUser
-              ? createFirebaseUser(
-                  isEmail: false,
-                  user: UserModel(
-                    uid: user.uid,
-                    username: user.displayName,
-                    email: user.email,
-                    profilePic: user.photoURL,
-                  ))
-              : null;
-        }
+     try {
+     final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+      await _auth.signInWithCredential(facebookAuthCredential);
         hideLoadingDialog();
         Get.back(); // to go to root
       } on Exception catch (err) {
         hideLoadingDialog();
         Get.snackbar("Error", err.toString());
+        debugPrint(err.toString());
       }
-    } else {
-      hideLoadingDialog();
+   
+  }
+
+  Future<void> signInWiththeFacebook() async {
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+      await _auth.signInWithCredential(facebookAuthCredential);
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar("Error", e.toString()); // Displaying the error message
     }
   }
   
