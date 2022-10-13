@@ -1,7 +1,9 @@
 import 'package:aimart_dev/app/modules/home/bindings/home_binding.dart';
+import 'package:aimart_dev/app/modules/home/views/admin_panel/admin_login.dart';
 import 'package:aimart_dev/app/modules/home/views/splash/splash_screen.dart';
 import 'package:aimart_dev/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,7 +34,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         defaultTransition: Transition.rightToLeft,
         initialBinding: HomeBinding(),
-        home: const SplashScreen(),
+        home: kIsWeb?
+          const AdminPanel():  const SplashScreen()
       ),
     );
   }

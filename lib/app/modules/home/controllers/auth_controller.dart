@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -117,34 +118,44 @@ class AuthController extends GetxController {
   }
 
   Future<void> signInWithFacebook() async {
-    showLoadingDialog(message: "Loading...");
-    final LoginResult result = await FacebookAuth.instance.login();
-    if (result.status == LoginStatus.success) {
+    showLoadingDialog(message: "Signing In with Facebook");
+     final LoginResult? loginResult = await FacebookAuth.instance.login();
+    if (loginResult != null) {
       try {
-        final OAuthCredential credential =
-            FacebookAuthProvider.credential(result.accessToken!.token);
-        UserCredential userResult =
-            await _auth.signInWithCredential(credential);
-        User? user = userResult.user;
+        final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+        UserCredential result = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+        User? user = result.user;
         if (user != null) {
-          userResult.additionalUserInfo!.isNewUser
+          result.additionalUserInfo!.isNewUser
               ? createFirebaseUser(
+                
                   user: UserModel(
-                  uid: user.uid,
-                  fullName: user.displayName,
-                  email: user.email,
-                  profilePic: user.photoURL,
-                ))
+                    uid: user.uid,
+                    username: user.displayName,
+                    email: user.email,
+                    profilePic: user.photoURL,
+                  ))
               : null;
         }
         hideLoadingDialog();
         Get.back();
       } on FirebaseAuthException catch (err) {
         hideLoadingDialog();
-        Get.snackbar('Error', err.toString());
+        Get.snackbar("Error", err.toString());
       }
-    } else {
-      hideLoadingDialog();
+   
+  }
+
+  Future<void> signInWiththeFacebook() async {
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+      await _auth.signInWithCredential(facebookAuthCredential);
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar("Error", e.toString()); // Displaying the error message
     }
   }
 
