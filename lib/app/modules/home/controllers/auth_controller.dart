@@ -49,15 +49,14 @@ class AuthController extends GetxController {
           .then((value) async {
         hideLoadingDialog();
         createFirebaseUser(
-            isEmail: true,
             user: UserModel(
-              uid: value.user!.uid,
-              username: username,
-              fullName: fullName,
-              bio: bio,
-              email: value.user!.email,
-              profilePic: '',
-            )).then((value) async {
+          uid: value.user!.uid,
+          username: username,
+          fullName: fullName,
+          bio: bio,
+          email: value.user!.email,
+          profilePic: '',
+        )).then((value) async {
           if (profilePic != null) {
             String imagePath = await FirebaseStorageServices.uploadToStorage(
                 file: profilePic, folderName: 'Users');
@@ -74,8 +73,7 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> createFirebaseUser(
-      {required UserModel user, required bool isEmail}) async {
+  Future<void> createFirebaseUser({required UserModel user}) async {
     try {
       await db.usersCollection.doc(user.uid).set(user);
     } on FirebaseException catch (err) {
@@ -99,13 +97,12 @@ class AuthController extends GetxController {
         if (user != null) {
           result.additionalUserInfo!.isNewUser
               ? createFirebaseUser(
-                  isEmail: false,
                   user: UserModel(
-                    uid: user.uid,
-                    fullName: user.displayName,
-                    email: user.email,
-                    profilePic: user.photoURL,
-                  ))
+                  uid: user.uid,
+                  fullName: user.displayName,
+                  email: user.email,
+                  profilePic: user.photoURL,
+                ))
               : null;
         }
         hideLoadingDialog();
@@ -120,36 +117,56 @@ class AuthController extends GetxController {
   }
 
   Future<void> signInWithFacebook() async {
-    showLoadingDialog(message: "Signing In with Facebook");
-     final LoginResult? loginResult = await FacebookAuth.instance.login();
-    if (loginResult != null) {
+    showLoadingDialog(message: "Loading...");
+    final LoginResult result = await FacebookAuth.instance.login();
+    if (result.status == LoginStatus.success) {
       try {
-        final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
-        UserCredential result = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-        User? user = result.user;
+        final OAuthCredential credential =
+            FacebookAuthProvider.credential(result.accessToken!.token);
+        UserCredential userResult =
+            await _auth.signInWithCredential(credential);
+        User? user = userResult.user;
         if (user != null) {
-          result.additionalUserInfo!.isNewUser
+          userResult.additionalUserInfo!.isNewUser
               ? createFirebaseUser(
-                  isEmail: false,
                   user: UserModel(
-                    uid: user.uid,
-                    username: user.displayName,
-                    email: user.email,
-                    profilePic: user.photoURL,
-                  ))
+                  uid: user.uid,
+                  fullName: user.displayName,
+                  email: user.email,
+                  profilePic: user.photoURL,
+                ))
               : null;
         }
         hideLoadingDialog();
-        Get.back(); // to go to root
-      } on Exception catch (err) {
+        Get.back();
+      } on FirebaseAuthException catch (err) {
         hideLoadingDialog();
-        Get.snackbar("Error", err.toString());
+        Get.snackbar('Error', err.toString());
       }
     } else {
       hideLoadingDialog();
     }
   }
-  
+
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    User user = _auth.currentUser!;
+    final cred = EmailAuthProvider.credential(
+        email: user.email!, password: currentPassword);
+    user.reauthenticateWithCredential(cred).then((value) {
+      user.updatePassword(newPassword).then((_) {
+        Get.snackbar(
+            'Password Changed', 'Your password has been changed successfully');
+      }).catchError((error) {
+        Get.snackbar("Error", error.toString());
+      });
+    }).catchError((err) {
+      Get.snackbar("Error", err.toString());
+    });
+  }
+
   Future<void> signOut() async {
     await _auth.signOut();
     await GoogleSignIn().signOut();
