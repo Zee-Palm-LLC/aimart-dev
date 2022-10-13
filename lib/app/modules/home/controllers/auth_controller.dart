@@ -119,22 +119,23 @@ class AuthController extends GetxController {
 
   Future<void> signInWithFacebook() async {
     showLoadingDialog(message: "Signing In with Facebook");
-     final LoginResult? loginResult = await FacebookAuth.instance.login();
+    final LoginResult? loginResult = await FacebookAuth.instance.login();
     if (loginResult != null) {
       try {
-        final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
-        UserCredential result = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+        final OAuthCredential facebookAuthCredential =
+            FacebookAuthProvider.credential(loginResult.accessToken!.token);
+        UserCredential result = await FirebaseAuth.instance
+            .signInWithCredential(facebookAuthCredential);
         User? user = result.user;
         if (user != null) {
           result.additionalUserInfo!.isNewUser
               ? createFirebaseUser(
-                
                   user: UserModel(
-                    uid: user.uid,
-                    username: user.displayName,
-                    email: user.email,
-                    profilePic: user.photoURL,
-                  ))
+                  uid: user.uid,
+                  username: user.displayName,
+                  email: user.email,
+                  profilePic: user.photoURL,
+                ))
               : null;
         }
         hideLoadingDialog();
@@ -143,39 +144,39 @@ class AuthController extends GetxController {
         hideLoadingDialog();
         Get.snackbar("Error", err.toString());
       }
-   
-  }
-
-  Future<void> signInWiththeFacebook() async {
-    try {
-      final LoginResult loginResult = await FacebookAuth.instance.login();
-
-      final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(loginResult.accessToken!.token);
-
-      await _auth.signInWithCredential(facebookAuthCredential);
-    } on FirebaseAuthException catch (e) {
-      Get.snackbar("Error", e.toString()); // Displaying the error message
     }
-  }
 
-  Future<void> changePassword({
-    required String currentPassword,
-    required String newPassword,
-  }) async {
-    User user = _auth.currentUser!;
-    final cred = EmailAuthProvider.credential(
-        email: user.email!, password: currentPassword);
-    user.reauthenticateWithCredential(cred).then((value) {
-      user.updatePassword(newPassword).then((_) {
-        Get.snackbar(
-            'Password Changed', 'Your password has been changed successfully');
-      }).catchError((error) {
-        Get.snackbar("Error", error.toString());
+    Future<void> signInWiththeFacebook() async {
+      try {
+        final LoginResult loginResult = await FacebookAuth.instance.login();
+
+        final OAuthCredential facebookAuthCredential =
+            FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+        await _auth.signInWithCredential(facebookAuthCredential);
+      } on FirebaseAuthException catch (e) {
+        Get.snackbar("Error", e.toString()); // Displaying the error message
+      }
+    }
+
+    Future<void> changePassword({
+      required String currentPassword,
+      required String newPassword,
+    }) async {
+      User user = _auth.currentUser!;
+      final cred = EmailAuthProvider.credential(
+          email: user.email!, password: currentPassword);
+      user.reauthenticateWithCredential(cred).then((value) {
+        user.updatePassword(newPassword).then((_) {
+          Get.snackbar('Password Changed',
+              'Your password has been changed successfully');
+        }).catchError((error) {
+          Get.snackbar("Error", error.toString());
+        });
+      }).catchError((err) {
+        Get.snackbar("Error", err.toString());
       });
-    }).catchError((err) {
-      Get.snackbar("Error", err.toString());
-    });
+    }
   }
 
   Future<void> signOut() async {

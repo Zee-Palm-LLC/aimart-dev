@@ -1,84 +1,85 @@
 import 'package:aimart_dev/app/data/helper/product_category.dart';
-import 'package:aimart_dev/app/modules/home/views/home/home_flashsale.dart';
-import 'package:aimart_dev/app/modules/home/views/home/home_mostpopular.dart';
+import 'package:aimart_dev/app/modules/home/controllers/product_controller.dart';
 import 'package:aimart_dev/app/modules/home/views/notification.dart/notification_screen.dart';
-import 'package:aimart_dev/app/modules/home/widgets/home/custom_chips.dart';
-import 'package:aimart_dev/app/modules/home/widgets/home/custom_text_button.dart';
-import 'package:aimart_dev/app/modules/home/widgets/home/display_item_container.dart';
-import 'package:aimart_dev/app/modules/home/widgets/home/search_text_feild.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
-
 import 'package:aimart_dev/app/data/constants/constants.dart';
+import 'package:optimized_cached_image/optimized_cached_image.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-import '../../models/product_model.dart';
-import '../search/search_screen.dart';
+import '../../controllers/user_controller.dart';
+import '../../models/user_model.dart';
+import '../../widgets/widgets.dart';
+import 'flash_sale_screen.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    List<Product> allList = displayproduct;
-    print(allList.length);
-    super.initState();
-  }
-
-  var _searchController = TextEditingController();
-
+  UserController uc = Get.find<UserController>();
+  ProductController pc = Get.find<ProductController>();
+  int selectedIndex = 0;
   int currentPos = 0;
-  List<String> list = ['All', 'Woman', 'Men', 'Kids'];
-  int selectIndex = 0;
-  List<Product> women = displayproduct
-      .where((element) => element.productCategory == ProductCategory.women)
-      .toList();
-  List<Product> men = displayproduct
-      .where((element) => element.productCategory == ProductCategory.men)
-      .toList();
-  List<Product> kids = displayproduct
-      .where((element) => element.productCategory == ProductCategory.kids)
-      .toList();
+  List<String> categories = ['All', 'Women', 'Men', 'Kids'];
   ProductCategory productCategory = ProductCategory.all;
-  List<Product> dataList = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
           backgroundColor: CustomColors.kLightBackground,
-          title: Padding(
-            padding: EdgeInsets.only(left: 10.w),
-            child: Row(
-              children: [
-                CircleAvatar(
-                    radius: 20.r,
-                    backgroundImage: AssetImage(CustomAssets.kprofilepic)),
-                SizedBox(width: 11.w),
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text('Hello Albert',
-                      style: CustomTextStyles.kBold16
-                          .copyWith(color: CustomColors.kDarkBblue)),
-                  SizedBox(height: 2.h),
-                  Text(
-                    'Find your best fashion here',
-                    style: CustomTextStyles.kMedium12
-                        .copyWith(color: CustomColors.kGrey),
+          title: Obx(() {
+            UserModel user = uc.user;
+            return Padding(
+              padding: EdgeInsets.only(left: 10.w),
+              child: Row(
+                children: [
+                  OptimizedCacheImage(
+                    placeholder: (context, url) => CircleAvatar(
+                      radius: 20.r,
+                      backgroundColor: CustomColors.kDivider,
+                      child:
+                          Icon(Icons.person, color: Colors.black, size: 40.h),
+                    ),
+                    errorWidget: (context, url, error) => CircleAvatar(
+                      radius: 20.r,
+                      backgroundColor: CustomColors.kDivider,
+                      child: Icon(Icons.error, color: Colors.red, size: 40.h),
+                    ),
+                    fit: BoxFit.contain,
+                    imageUrl: user.profilePic!,
+                    imageBuilder: (context, imageProvider) {
+                      return CircleAvatar(
+                        radius: 20.r,
+                        backgroundImage: imageProvider,
+                      );
+                    },
                   ),
-                ]),
-              ],
-            ),
-          ),
+                  SizedBox(width: 11.w),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Hello, ${user.fullName}',
+                            style: CustomTextStyles.kBold16
+                                .copyWith(color: CustomColors.kDarkBblue)),
+                        SizedBox(height: 2.h),
+                        Text(
+                          'Find your best fashion here',
+                          style: CustomTextStyles.kMedium12
+                              .copyWith(color: CustomColors.kGrey),
+                        ),
+                      ]),
+                ],
+              ),
+            );
+          }),
           actions: [
             Padding(
               padding: EdgeInsets.only(right: 28.w),
@@ -126,23 +127,36 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                       child: InkWell(
                     onTap: () {
-                      Get.to(() => SearchScreen());
+                      // Get.to(() => SearchScreen());
                     },
-                    child: CustomTextFormField(
-                      isEnabled: false,
-                      controller: _searchController,
-                      hintText: 'What are you looking for?',
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.done,
+                    child: Container(
+                      height: 50.h,
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      decoration: BoxDecoration(
+                          color: CustomColors.kLightBackground,
+                          borderRadius: BorderRadius.circular(10.r),
+                          border: Border.all(color: CustomColors.kGrey2)),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(CustomAssets.ksearch),
+                          SizedBox(width: 10.w),
+                          Text("What are you looking for",
+                              style: CustomTextStyles.kMedium14.copyWith(
+                                color: CustomColors.kGrey2,
+                              ))
+                        ],
+                      ),
                     ),
                   )),
                   SizedBox(width: 12.w),
                   SizedBox(
-                    height: 48.h,
-                    width: 48.w,
-                    child: CustomElevatedButton(
+                    height: 50.h,
+                    width: 50.w,
+                    child: PrimaryButton(
                       child: SvgPicture.asset(CustomAssets.kfiltericon),
-                      onPressed: () {},
+                      onPressed: () {
+                        // Get.to(() => SearchScreen());
+                      },
                     ),
                   )
                 ],
@@ -153,12 +167,13 @@ class _HomePageState extends State<HomePage> {
                   CarouselSlider(
                     options: CarouselOptions(
                         autoPlay: true,
+                        enlargeCenterPage: true,
                         onPageChanged: (index, reason) {
                           setState(() {
                             currentPos = index;
                           });
                         },
-                        viewportFraction: 1,
+                        viewportFraction: 0.95,
                         height: 188.h),
                     items: [
                       CustomAssets.ksale,
@@ -205,7 +220,11 @@ class _HomePageState extends State<HomePage> {
                           SizedBox(
                             height: 12.h,
                           ),
-                          CustomElevatedButton(
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.r)),
+                            ),
                             onPressed: () {
                               Get.to(() => HomeFlashSale());
                             },
@@ -241,48 +260,39 @@ class _HomePageState extends State<HomePage> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return CustomChips(
-                        textColor: selectIndex == index
+                        textColor: selectedIndex == index
                             ? CustomColors.kWhite
                             : CustomColors.kGrey,
-                        color: selectIndex == index
+                        color: selectedIndex == index
                             ? CustomColors.kPrimary
                             : CustomColors.kBackground,
-                        borderColor: selectIndex == index
+                        borderColor: selectedIndex == index
                             ? CustomColors.kPrimary
                             : CustomColors.kGrey.withOpacity(0.3),
                         onPress: () {
                           setState(() {
                             if (index == 0) {
                               productCategory = ProductCategory.all;
-                              dataList = displayproduct;
                             }
-
                             if (index == 1) {
                               productCategory = ProductCategory.women;
-                              dataList = women;
                             }
-
                             if (index == 2) {
                               productCategory = ProductCategory.men;
-                              dataList = men;
                             }
-
                             if (index == 3) {
                               productCategory = ProductCategory.kids;
-                              dataList = kids;
                             }
-                            selectIndex = index;
+                            selectedIndex = index;
                           });
                         },
-                        title: list[index],
+                        title: categories[index],
                       );
                     },
                     separatorBuilder: (context, index) {
-                      return SizedBox(
-                        width: 12.w,
-                      );
+                      return SizedBox(width: 12.w);
                     },
-                    itemCount: 4),
+                    itemCount: categories.length),
               ),
               SizedBox(height: 30.h),
               Row(
@@ -296,60 +306,35 @@ class _HomePageState extends State<HomePage> {
                   CustomTextButton(
                       text: "See All",
                       onPressed: () {
-                        Get.to(() => HomeMostPopular());
+                        // Get.to(() => HomeMostPopular());
                       }),
                 ],
               ),
-              SizedBox(
-                height: 24.h,
-              ),
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: dataList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return DisplayItemContainer(
-                    onPressed: () {
-                      favouriteList.contains(dataList[index])
-                          ? favouriteList.remove(dataList[index])
-                          : favouriteList.add(dataList[index]);
-                      setState(() {});
-                    },
-                    isLike: favouriteList.contains(dataList[index])
-                        ? CustomColors.kError
-                        : CustomColors.kDivider,
-                    product: dataList[index],
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(height: 20.h);
-                },
-              )
+              SizedBox(height: 24.h),
+              Obx(() {
+                return pc.allproductList?.isEmpty ?? true
+                    ? Center(
+                        child: Text(
+                          'No Products',
+                          style: CustomTextStyles.kBold20,
+                        ),
+                      )
+                    : ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: pc.allproductList?.length ?? 0,
+                        itemBuilder: (BuildContext context, int index) {
+                          return HomePageCard(
+                            onPressed: () {},
+                            isLike: CustomColors.kDivider,
+                            product: pc.allproductList![index],
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return SizedBox(height: 20.h);
+                        },
+                      );
+              })
             ]));
   }
 }
-
-class CustomElevatedButton extends StatelessWidget {
-  final VoidCallback onPressed;
-  final Widget child;
-  const CustomElevatedButton({
-    Key? key,
-    required this.onPressed,
-    required this.child,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-          // fixedSize: Size(103.w, 32.h),
-          primary: CustomColors.kbrandblue,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r))),
-      onPressed: onPressed,
-      child: child,
-    );
-  }
-}
-
-List<Product> favouriteList = [];

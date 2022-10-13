@@ -13,3 +13,4 @@ export 'onboarding/onboarding.dart';
 export 'profileWidgets/profileWidgets.dart';
 export 'textfields/textfields.dart';
 export 'wishlist/wishlist.dart';
+export 'home/home.dart';

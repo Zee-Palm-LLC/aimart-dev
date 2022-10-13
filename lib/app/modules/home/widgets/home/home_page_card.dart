@@ -1,17 +1,18 @@
+import 'package:aimart_dev/app/data/helper/product_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:aimart_dev/app/data/constants/constants.dart';
+import 'package:get/get.dart';
 
 import '../../models/product_model.dart';
-import '../../models/tag_model.dart';
 import '../wishlist/favourite_icon.dart';
 
-class DisplayItemContainer extends StatelessWidget {
+class HomePageCard extends StatelessWidget {
   final Product product;
   final VoidCallback onPressed;
   final Color isLike;
-  const DisplayItemContainer({
+  const HomePageCard({
     Key? key,
     required this.product,
     required this.onPressed,
@@ -22,12 +23,12 @@ class DisplayItemContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         height: 426.h,
-        width: 319.w,
+        width: Get.width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.r),
           image: DecorationImage(
-            image: AssetImage(product.productImage!),
-            fit: BoxFit.fill,
+            image: NetworkImage(product.productImages.first),
+            fit: BoxFit.cover,
           ),
         ),
         child: Padding(
@@ -37,11 +38,11 @@ class DisplayItemContainer extends StatelessWidget {
                 Container(
                   height: 33.h,
                   decoration: BoxDecoration(
-                    color: product.productTag!.tagType == Tagtype.trending
+                    color: product.productTag == Tagtype.trending
                         ? CustomColors.kTrendingBlue
-                        : product.productTag!.tagType == Tagtype.discount
+                        : product.productTag == Tagtype.discount
                             ? CustomColors.kdarkred
-                            : product.productTag!.tagType == Tagtype.bestseller
+                            : product.productTag == Tagtype.bestseller
                                 ? CustomColors.kgreen
                                 : CustomColors.knewblue,
                     borderRadius: BorderRadius.circular(20.r),
@@ -50,7 +51,7 @@ class DisplayItemContainer extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(12.w, 2.h, 12.w, 2.h),
                       child: Text(
-                        product.productTag!.tagName,
+                        product.productTag.name.toUpperCase(),
                         style: CustomTextStyles.kBold14
                             .copyWith(color: CustomColors.kWhite),
                       ),
@@ -68,23 +69,21 @@ class DisplayItemContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.productName!,
+                    product.productName,
                     style: CustomTextStyles.kBold20
                         .copyWith(color: CustomColors.kWhite),
                   ),
-                  SizedBox(
-                    height: 12.h,
-                  ),
+                  SizedBox(height: 12.h),
                   Row(
                     children: [
                       Text(
-                        product.productType!,
+                        product.productType,
                         style: CustomTextStyles.kMedium14
                             .copyWith(color: CustomColors.kWhite),
                       ),
                       const Spacer(),
                       Text(
-                        '\$${product.productPrize!}',
+                        '\$${product.productPrice.toDouble()}',
                         style: CustomTextStyles.kBold20
                             .copyWith(color: CustomColors.kWhite),
                       ),

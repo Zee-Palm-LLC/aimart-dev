@@ -1,132 +1,74 @@
-import 'package:aimart_dev/app/modules/home/models/product_tag.dart';
+import 'dart:convert';
 
-import '../../../data/constants/constants.dart';
 import '../../../data/helper/product_category.dart';
+import 'rating_model.dart';
 
 class Product {
-  String? productId;
-  String? productName;
-  double? productPrize;
-  String? productImage;
-  String? productType;
-  ProductCategory? productCategory;
-  ProductTag? productTag;
-  String? oldPrize;
-  Product(
-      {this.productId,
-      this.productName,
-      this.productPrize,
-      this.productImage,
-      this.productType,
-      this.oldPrize,
-      this.productTag,
-      this.productCategory});
+  String productId;
+  String productName;
+  String productType;
+  int productPrice;
+  int? oldPrice;
+  List<String> productImages;
+  ProductCategory productCategory;
+  Tagtype productTag;
+  String description;
+  List<String> colors;
+  List<String> sizes;
+  Rating? rating;
+  Product({
+    required this.productId,
+    required this.productName,
+    required this.productType,
+    required this.productPrice,
+    this.oldPrice,
+    required this.productCategory,
+    required this.productImages,
+    required this.productTag,
+    required this.description,
+    required this.colors,
+    required this.sizes,
+    this.rating,
+  });
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'productId': productId,
+      'productName': productName,
+      'productType': productType,
+      'productPrice': productPrice,
+      'oldPrice': oldPrice,
+      'productImages': productImages,
+      'productTag': productTag.index,
+      'description': description,
+      'colors': colors,
+      'sizes': sizes,
+      'rating': rating?.toMap(),
+      'productCategory': productCategory.index
+    };
+  }
+
+  factory Product.fromMap(Map<String, dynamic> map) {
+    return Product(
+      productId: map['productId'] as String,
+      productName: map['productName'] as String,
+      productType: map['productType'] as String,
+      productPrice: map['productPrice'] as int,
+      oldPrice: map['oldPrice'] != null ? map['oldPrice'] as int : null,
+      productImages: List<String>.from((map['productImages'] as List<dynamic>)),
+      productTag: Tagtype.values[map['productTag']],
+      productCategory: ProductCategory.values[map['productCategory']],
+      description: map['description'] as String,
+      colors: List<String>.from((map['colors'] as List<dynamic>)),
+      sizes: List<String>.from((map['sizes'] as List<dynamic>)),
+      rating: map['rating'] != null
+          ? Rating.fromMap(map['rating'] as Map<String, dynamic>)
+          : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Product.fromJson(String source) =>
+      Product.fromMap(json.decode(source) as Map<String, dynamic>);
 }
-
-List<Product> products = [
-  product1,
-  product2,
-  product3,
-  product4,
-  product5,
-  product1,
-  product2,
-  product3
-];
-
-Product product1 = Product(
-  productImage: CustomAssets.kproduct1,
-  productName: 'Black Maria Sytle',
-  productType: "Shirt & Hats",
-  productPrize: 49.99,
-  productTag: ProductTag(tagName: "Trending", tagType: Tagtype.trending),
-  productCategory: ProductCategory.women,
-  oldPrize: '53.00',
-);
-Product product2 = Product(
-  productImage: CustomAssets.kproduct2,
-  productName: 'Fendi Rom Sytle',
-  productType: "Sweater & Bag",
-  productPrize: 69.99,
-  productTag: ProductTag(tagName: "Best Seller", tagType: Tagtype.bestseller),
-  productCategory: ProductCategory.women,
-  oldPrize: '53.00',
-);
-Product product3 = Product(
-  productImage: CustomAssets.kproduct3,
-  productName: 'Heater Ford Style',
-  productType: "Shirt & Hats",
-  productPrize: 57.99,
-  productTag: ProductTag(tagName: "-50 %", tagType: Tagtype.discount),
-  productCategory: ProductCategory.men,
-  oldPrize: '144.00',
-);
-Product product4 = Product(
-  productImage: CustomAssets.kproduct4,
-  productName: 'Heater Ford Style',
-  productType: "Shirt & Hats",
-  productPrize: 59.99,
-  productTag: ProductTag(tagName: "-50 %", tagType: Tagtype.discount),
-  productCategory: ProductCategory.men,
-  oldPrize: '120.00',
-);
-Product product5 = Product(
-  productImage: CustomAssets.kproduct1,
-  productName: 'Blazzer Casual',
-  productType: "Shirt & Hats",
-  productPrize: 37.99,
-  productTag: ProductTag(tagName: "-50 %", tagType: Tagtype.discount),
-  productCategory: ProductCategory.men,
-  oldPrize: '73.00',
-);
-
-List<Product> displayproduct = [product10, product12];
-Product product10 = Product(
-  productImage: CustomAssets.kkarli,
-  productName: 'Black Maria Sytle',
-  productType: "Shirt & Hats",
-  productPrize: 49.99,
-  productTag: ProductTag(tagName: "Trending", tagType: Tagtype.trending),
-  productCategory: ProductCategory.women,
-  oldPrize: '53.00',
-);
-
-Product product12 = Product(
-  productImage: CustomAssets.product2,
-  productName: 'Fendi Rom Sytle',
-  productType: "Sweater & Bag",
-  productPrize: 69.99,
-  productTag: ProductTag(tagName: "Best Seller", tagType: Tagtype.bestseller),
-  productCategory: ProductCategory.women,
-  oldPrize: '53.00',
-);
-
-Product product13 = Product(
-  productImage: CustomAssets.kheaterfortstyle,
-  productName: 'Heater Ford Style',
-  productType: "Shirt & Hats",
-  productPrize: 57.99,
-  productTag: ProductTag(tagName: "-50 %", tagType: Tagtype.discount),
-  productCategory: ProductCategory.men,
-  oldPrize: '144.00',
-);
-
-Product product14 = Product(
-  productImage: CustomAssets.kheaterfortstyle,
-  productName: 'Heater Ford Style',
-  productType: "Shirt & Hats",
-  productPrize: 59.99,
-  productTag: ProductTag(tagName: "-50 %", tagType: Tagtype.discount),
-  productCategory: ProductCategory.men,
-  oldPrize: '120.00',
-);
-
-Product product15 = Product(
-  productImage: CustomAssets.product3,
-  productName: 'Blazzer Casual',
-  productType: "Shirt & Hats",
-  productPrize: 37.99,
-  productTag: ProductTag(tagName: "-50 %", tagType: Tagtype.discount),
-  productCategory: ProductCategory.men,
-  oldPrize: '73.00',
-);

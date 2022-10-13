@@ -7,14 +7,14 @@ import '../../../../data/helper/product_category.dart';
 import '../../models/product_model.dart';
 import '../wishlist/favourite_icon.dart';
 
-class ItemInGridSale extends StatelessWidget {
+class SaleCardGrid extends StatelessWidget {
   final Product product;
-  final VoidCallback onPressed;
+  final VoidCallback fovoriteCallBack;
   final Color isFavourite;
-  const ItemInGridSale({
+  const SaleCardGrid({
     Key? key,
     required this.product,
-    required this.onPressed,
+    required this.fovoriteCallBack,
     required this.isFavourite,
   }) : super(key: key);
 
@@ -32,7 +32,7 @@ class ItemInGridSale extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.r),
                 image: DecorationImage(
-                  image: AssetImage(product.productImage!),
+                  image: NetworkImage(product.productImages.first),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -44,12 +44,11 @@ class ItemInGridSale extends StatelessWidget {
                       Container(
                         height: 28.h,
                         decoration: BoxDecoration(
-                          color: product.productTag!.tagType == Tagtype.trending
+                          color: product.productTag == Tagtype.trending
                               ? CustomColors.kTrendingBlue
-                              : product.productTag!.tagType == Tagtype.discount
+                              : product.productTag == Tagtype.discount
                                   ? CustomColors.kdarkred
-                                  : product.productTag!.tagType ==
-                                          Tagtype.bestseller
+                                  : product.productTag == Tagtype.bestseller
                                       ? CustomColors.kgreen
                                       : CustomColors.knewblue,
                           borderRadius: BorderRadius.circular(8.r),
@@ -58,7 +57,7 @@ class ItemInGridSale extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(12.w, 2.h, 12.w, 2.h),
                             child: Text(
-                              product.productTag!.tagName,
+                              product.productTag.name.toUpperCase(),
                               style: CustomTextStyles.kBold12
                                   .copyWith(color: CustomColors.kWhite),
                             ),
@@ -67,7 +66,7 @@ class ItemInGridSale extends StatelessWidget {
                       ),
                       const Spacer(),
                       FavouriteButton(
-                        onPressed: onPressed,
+                        onPressed: fovoriteCallBack,
                         isFavourite: isFavourite,
                       ),
                     ]),
@@ -75,7 +74,7 @@ class ItemInGridSale extends StatelessWidget {
             ),
             SizedBox(height: 12.h),
             Text(
-              product.productName!,
+              product.productName,
               style: CustomTextStyles.kBold12
                   .copyWith(color: CustomColors.kprimarylight),
             ),
@@ -85,13 +84,13 @@ class ItemInGridSale extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  '\$${product.productPrize!}',
+                  '\$${product.productPrice}',
                   style: CustomTextStyles.kBold14
                       .copyWith(color: CustomColors.kbrandblue),
                 ),
                 SizedBox(width: 8.w),
                 Text(
-                  '\$${product.oldPrize!}',
+                  '\$${product.oldPrice}',
                   style: CustomTextStyles.kMedium14.copyWith(
                     color: CustomColors.kGrey,
                     decoration: TextDecoration.lineThrough,

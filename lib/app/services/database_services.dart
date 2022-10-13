@@ -4,7 +4,7 @@ import '../modules/home/models/user_model.dart';
 
 class DatabaseService {
   FirebaseFirestore firebase = FirebaseFirestore.instance;
-  //User related Collection/Document References
+
   CollectionReference<UserModel?> get usersCollection => firebase
           .collection('Users')
           .withConverter(fromFirestore: (snapshot, options) {
@@ -12,4 +12,9 @@ class DatabaseService {
       }, toFirestore: (object, options) {
         return object!.toMap();
       });
+
+//ProductCollection
+
+  CollectionReference productsCollection =
+      FirebaseFirestore.instance.collection('Products');
 }

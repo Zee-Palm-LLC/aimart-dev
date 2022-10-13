@@ -139,8 +139,8 @@ class _LandingPageState extends State<LandingPage> {
         screens: [
           HomePage(),
           DicoverScreen(),
-          WishListScreen(),
-          HistoryScreen(),
+          Text('WishList'),
+          Text('History'),
           ProfileScreen()
         ],
         items: _navBarsItems(),

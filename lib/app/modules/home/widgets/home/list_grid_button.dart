@@ -17,37 +17,35 @@ class listGridButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 38.h,
-      width: 68.w,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(color: CustomColors.kprimary200)),
+          border: Border.all(color: CustomColors.kGrey)),
       child: Row(children: [
         Container(
-          height: 30.h,
+          height: 38.h,
           width: 30.w,
           decoration: BoxDecoration(
-            color: isView ?  Colors.transparent : CustomColors.kbrandblue,
+            color: isView ? Colors.transparent : CustomColors.kbrandblue,
             shape: BoxShape.circle,
           ),
           child: IconButton(
-            icon: SvgPicture.asset(CustomAssets.kgrid,
-            color:  isView ?CustomColors.kGrey : CustomColors.kWhite, 
+            icon: SvgPicture.asset(
+              CustomAssets.kgrid,
+              color: isView ? CustomColors.kGrey : CustomColors.kWhite,
             ),
             onPressed: onGridPress,
           ),
         ),
         Container(
-          height: 30.h,
+          height: 38.h,
           width: 30.w,
           decoration: BoxDecoration(
-            color: isView ?  CustomColors.kbrandblue:Colors.transparent ,
+            color: isView ? CustomColors.kbrandblue : Colors.transparent,
             shape: BoxShape.circle,
           ),
           child: IconButton(
             icon: SvgPicture.asset(CustomAssets.klist,
-            color: isView ? CustomColors.kWhite :CustomColors.kGrey
-            ),
+                color: isView ? CustomColors.kWhite : CustomColors.kGrey),
             onPressed: onListPress,
           ),
         )

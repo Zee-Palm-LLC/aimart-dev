@@ -1,2 +1,2 @@
-export 'custom_discount_widget.dart';
+export 'discover_card.dart';
 export 'detail_product.dart';

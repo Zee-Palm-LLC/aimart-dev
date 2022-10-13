@@ -1,5 +1,4 @@
 import 'package:aimart_dev/app/modules/home/bindings/home_binding.dart';
-import 'package:aimart_dev/app/modules/home/views/admin_panel/admin_login.dart';
 import 'package:aimart_dev/app/modules/home/views/splash/splash_screen.dart';
 import 'package:aimart_dev/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,14 +28,12 @@ class MyApp extends StatelessWidget {
       designSize: const Size(414, 896),
       minTextAdapt: true,
       builder: (context, child) => GetMaterialApp(
-        title: 'Aimart',
-        theme: mainTheme,
-        debugShowCheckedModeBanner: false,
-        defaultTransition: Transition.rightToLeft,
-        initialBinding: HomeBinding(),
-        home: kIsWeb?
-          const AdminPanel():  const SplashScreen()
-      ),
+          title: 'Aimart',
+          theme: mainTheme,
+          debugShowCheckedModeBanner: false,
+          defaultTransition: Transition.rightToLeft,
+          initialBinding: HomeBinding(),
+          home: const SplashScreen()),
     );
   }
 }

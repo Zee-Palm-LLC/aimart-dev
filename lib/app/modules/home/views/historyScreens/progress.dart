@@ -1,25 +1,25 @@
-import 'package:aimart_dev/app/data/helper/order_status.dart';
-import 'package:aimart_dev/app/modules/home/models/history_model.dart';
-import 'package:aimart_dev/app/modules/home/widgets/history/history_card.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:aimart_dev/app/data/helper/order_status.dart';
+// import 'package:aimart_dev/app/modules/home/models/history_model.dart';
+// import 'package:aimart_dev/app/modules/home/widgets/history/history_card.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ProgressHistoryScreen extends StatelessWidget {
-  List<HistoryModel> progress = historyList
-      .where((element) => element.orderStatus == OrderStatus.process)
-      .toList();
-  ProgressHistoryScreen({Key? key}) : super(key: key);
+// class ProgressHistoryScreen extends StatelessWidget {
+//   List<HistoryModel> progress = historyList
+//       .where((element) => element.orderStatus == OrderStatus.process)
+//       .toList();
+//   ProgressHistoryScreen({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-        itemCount: progress.length,
-        padding: EdgeInsets.symmetric(horizontal: 28.w),
-        separatorBuilder: (context, index) => SizedBox(height: 32.h),
-        itemBuilder: (conext, index) {
-          return HistoryCard(
-            history: progress[index],
-          );
-        });
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.separated(
+//         itemCount: progress.length,
+//         padding: EdgeInsets.symmetric(horizontal: 28.w),
+//         separatorBuilder: (context, index) => SizedBox(height: 32.h),
+//         itemBuilder: (conext, index) {
+//           return HistoryCard(
+//             history: progress[index],
+//           );
+//         });
+//   }
+// }

@@ -1,13 +1,14 @@
 import 'package:aimart_dev/app/data/constants/constants.dart';
 import 'package:aimart_dev/app/modules/home/widgets/appbar/appbar.dart';
-import 'package:aimart_dev/app/modules/home/widgets/textfields/search_bar.dart';
+import 'package:aimart_dev/app/modules/home/widgets/buttons/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
-import '../../widgets/discover/custom_discount_widget.dart';
+import '../../controllers/product_controller.dart';
+import '../../widgets/discover/discover_card.dart';
 import '../../widgets/home/custom_chips.dart';
-import '../home/home_screen.dart';
 
 class DicoverScreen extends StatefulWidget {
   const DicoverScreen({super.key});
@@ -19,6 +20,7 @@ class DicoverScreen extends StatefulWidget {
 class _DicoverScreenState extends State<DicoverScreen> {
   TextEditingController sController = TextEditingController();
   int selectIndex = 0;
+  ProductController pc = Get.find<ProductController>();
   List<String> list = ['All', 'Woman', 'Men', 'Kids'];
   @override
   Widget build(BuildContext context) {
@@ -32,18 +34,39 @@ class _DicoverScreenState extends State<DicoverScreen> {
             Row(
               children: [
                 Expanded(
-                  child: SearchBar(
-                    controller: sController,
-                    hintText: 'What are you looking for?',
+                    child: InkWell(
+                  onTap: () {
+                    // Get.to(() => SearchScreen());
+                  },
+                  child: Container(
+                    height: 50.h,
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    decoration: BoxDecoration(
+                        color: CustomColors.kLightBackground,
+                        borderRadius: BorderRadius.circular(5.r),
+                        border: Border.all(
+                            color: CustomColors.kGrey.withOpacity(0.5))),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(CustomAssets.ksearch),
+                        SizedBox(width: 10.w),
+                        Text("What are you looking for",
+                            style: CustomTextStyles.kMedium14.copyWith(
+                              color: CustomColors.kGrey2,
+                            ))
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(width: 12.h),
+                )),
+                SizedBox(width: 12.w),
                 SizedBox(
-                  height: 48.h,
-                  width: 48.w,
-                  child: CustomElevatedButton(
+                  height: 50.h,
+                  width: 50.w,
+                  child: PrimaryButton(
                     child: SvgPicture.asset(CustomAssets.kfiltericon),
-                    onPressed: () {},
+                    onPressed: () {
+                      // Get.to(() => SearchScreen());
+                    },
                   ),
                 )
               ],
@@ -75,28 +98,38 @@ class _DicoverScreenState extends State<DicoverScreen> {
                   separatorBuilder: (context, index) {
                     return SizedBox(width: 12.w);
                   },
-                  itemCount: 4),
+                  itemCount: list.length),
             ),
             SizedBox(height: 28.h),
-            Expanded(
-              child: GridView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: 10,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 156.w / 200.h,
-                ),
-                itemBuilder: (context, index) {
-                  return CustomDiscountWidget(
-                    onTap: () {},
-                    favouriteCallback: () {},
-                    isFavourite: CustomColors.kDivider,
-                  );
-                },
-              ),
-            ),
+            Obx(() {
+              return pc.allproductList?.isEmpty ?? true
+                  ? Center(
+                      child: Text(
+                        'No Products',
+                        style: CustomTextStyles.kBold20,
+                      ),
+                    )
+                  : Expanded(
+                      child: GridView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: pc.allproductList?.length ?? 0,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 156.w / 200.h,
+                        ),
+                        itemBuilder: (context, index) {
+                          return DiscoverCard(
+                            onTap: () {},
+                            product: pc.allproductList![index],
+                            favouriteCallback: () {},
+                            isFavourite: CustomColors.kDivider,
+                          );
+                        },
+                      ),
+                    );
+            }),
           ],
         ),
       ),

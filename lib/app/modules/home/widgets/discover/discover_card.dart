@@ -1,16 +1,20 @@
+import 'package:aimart_dev/app/modules/home/models/product_model.dart';
 import 'package:aimart_dev/app/modules/home/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../data/constants/constants.dart';
+import '../../../../data/helper/product_category.dart';
 
-class CustomDiscountWidget extends StatelessWidget {
+class DiscoverCard extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? favouriteCallback;
   final Color isFavourite;
-  const CustomDiscountWidget({
+  final Product product;
+  const DiscoverCard({
     Key? key,
     this.onTap,
+    required this.product,
     this.favouriteCallback,
     required this.isFavourite,
   }) : super(key: key);
@@ -19,7 +23,7 @@ class CustomDiscountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       InkWell(
-        onTap: () {},
+        onTap: onTap,
         child: Container(
           height: 170.h,
           width: 170.w,
@@ -27,25 +31,32 @@ class CustomDiscountWidget extends StatelessWidget {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5.r),
               image: DecorationImage(
-                  image: AssetImage(CustomAssets.kproduct1),
+                  image: NetworkImage(product.productImages.first),
                   fit: BoxFit.cover)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 48.w,
-                height: 28.h,
+                height: 33.h,
                 decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: CustomColors.kPrimary,
-                  borderRadius: BorderRadius.circular(8),
+                  color: product.productTag == Tagtype.trending
+                      ? CustomColors.kTrendingBlue
+                      : product.productTag == Tagtype.discount
+                          ? CustomColors.kdarkred
+                          : product.productTag == Tagtype.bestseller
+                              ? CustomColors.kgreen
+                              : CustomColors.knewblue,
+                  borderRadius: BorderRadius.circular(5.r),
                 ),
                 child: Center(
-                  child: Text(
-                    'New',
-                    style: CustomTextStyles.kBold12
-                        .copyWith(color: CustomColors.kWhite),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(12.w, 2.h, 12.w, 2.h),
+                    child: Text(
+                      product.productTag.name.toUpperCase(),
+                      style: CustomTextStyles.kBold14
+                          .copyWith(color: CustomColors.kWhite),
+                    ),
                   ),
                 ),
               ),
@@ -56,13 +67,13 @@ class CustomDiscountWidget extends StatelessWidget {
       ),
       SizedBox(height: 12.h),
       Text(
-        'Vineyard Style',
+        product.productName,
         style: CustomTextStyles.kMedium12
             .copyWith(color: CustomColors.kDarkTextColor),
       ),
       SizedBox(height: 4.h),
       Text(
-        ' \$57,99',
+        ' \$ ${product.productPrice}',
         style: CustomTextStyles.kBold14
             .copyWith(color: CustomColors.kDiscountTextColor),
       )
