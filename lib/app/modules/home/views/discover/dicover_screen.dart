@@ -1,4 +1,5 @@
 import 'package:aimart_dev/app/data/constants/constants.dart';
+import 'package:aimart_dev/app/modules/home/views/discover/detail_product_screen.dart';
 import 'package:aimart_dev/app/modules/home/widgets/appbar/appbar.dart';
 import 'package:aimart_dev/app/modules/home/widgets/buttons/buttons.dart';
 import 'package:flutter/material.dart';
@@ -121,7 +122,10 @@ class _DicoverScreenState extends State<DicoverScreen> {
                         ),
                         itemBuilder: (context, index) {
                           return DiscoverCard(
-                            onTap: () {},
+                            onTap: () {
+                              Get.to(DetailProductScreen(
+                                  product: pc.allproductList![index]));
+                            },
                             product: pc.allproductList![index],
                             favouriteCallback: () {},
                             isFavourite: CustomColors.kDivider,

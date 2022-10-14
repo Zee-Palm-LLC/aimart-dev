@@ -1,5 +1,6 @@
 import 'package:aimart_dev/app/data/helper/product_category.dart';
 import 'package:aimart_dev/app/modules/home/controllers/product_controller.dart';
+import 'package:aimart_dev/app/modules/home/views/discover/detail_product_screen.dart';
 import 'package:aimart_dev/app/modules/home/views/notification.dart/notification_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:aimart_dev/app/data/constants/constants.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../controllers/user_controller.dart';
+import '../../models/product_model.dart';
 import '../../models/user_model.dart';
 import '../../widgets/widgets.dart';
 import 'flash_sale_screen.dart';
@@ -29,8 +31,10 @@ class _HomePageState extends State<HomePage> {
   int currentPos = 0;
   List<String> categories = ['All', 'Women', 'Men', 'Kids'];
   ProductCategory productCategory = ProductCategory.all;
+  List<Product>? productCategoryList = [];
   @override
   Widget build(BuildContext context) {
+    UserModel user = uc.user;
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -54,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                       child: Icon(Icons.error, color: Colors.red, size: 40.h),
                     ),
                     fit: BoxFit.contain,
-                    imageUrl: user.profilePic!,
+                    imageUrl: user.profilePic ?? '',
                     imageBuilder: (context, imageProvider) {
                       return CircleAvatar(
                         radius: 20.r,
@@ -166,15 +170,16 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   CarouselSlider(
                     options: CarouselOptions(
-                        autoPlay: true,
-                        enlargeCenterPage: true,
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            currentPos = index;
-                          });
-                        },
-                        viewportFraction: 0.95,
-                        height: 188.h),
+                      autoPlay: true,
+                      enlargeCenterPage: true,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          currentPos = index;
+                        });
+                      },
+                      viewportFraction: 1,
+                      height: 188.h,
+                    ),
                     items: [
                       CustomAssets.ksale,
                       CustomAssets.ksale,
@@ -191,7 +196,7 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(8.r),
                               image: DecorationImage(
                                 image: AssetImage(i),
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                               ),
                             ),
                           );
@@ -253,88 +258,142 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(height: 24.h),
-              SizedBox(
-                height: 42.h,
-                child: ListView.separated(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return CustomChips(
-                        textColor: selectedIndex == index
-                            ? CustomColors.kWhite
-                            : CustomColors.kGrey,
-                        color: selectedIndex == index
-                            ? CustomColors.kPrimary
-                            : CustomColors.kBackground,
-                        borderColor: selectedIndex == index
-                            ? CustomColors.kPrimary
-                            : CustomColors.kGrey.withOpacity(0.3),
-                        onPress: () {
-                          setState(() {
-                            if (index == 0) {
-                              productCategory = ProductCategory.all;
-                            }
-                            if (index == 1) {
-                              productCategory = ProductCategory.women;
-                            }
-                            if (index == 2) {
-                              productCategory = ProductCategory.men;
-                            }
-                            if (index == 3) {
-                              productCategory = ProductCategory.kids;
-                            }
-                            selectedIndex = index;
-                          });
-                        },
-                        title: categories[index],
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return SizedBox(width: 12.w);
-                    },
-                    itemCount: categories.length),
-              ),
-              SizedBox(height: 30.h),
-              Row(
-                children: [
-                  Text(
-                    'Most Popular',
-                    style: CustomTextStyles.kBold20
-                        .copyWith(color: CustomColors.kPrimary),
-                  ),
-                  const Spacer(),
-                  CustomTextButton(
-                      text: "See All",
-                      onPressed: () {
-                        // Get.to(() => HomeMostPopular());
-                      }),
-                ],
-              ),
-              SizedBox(height: 24.h),
               Obx(() {
+                ;
                 return pc.allproductList?.isEmpty ?? true
                     ? Center(
-                        child: Text(
-                          'No Products',
-                          style: CustomTextStyles.kBold20,
-                        ),
-                      )
-                    : ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: pc.allproductList?.length ?? 0,
-                        itemBuilder: (BuildContext context, int index) {
-                          return HomePageCard(
-                            onPressed: () {},
-                            isLike: CustomColors.kDivider,
-                            product: pc.allproductList![index],
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return SizedBox(height: 20.h);
-                        },
+                        child: Text("No Products",
+                            style: CustomTextStyles.kBold20))
+                    : Column(
+                        children: [
+                          SizedBox(
+                            height: 42.h,
+                            child: ListView.separated(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return CustomChips(
+                                    textColor: selectedIndex == index
+                                        ? CustomColors.kWhite
+                                        : CustomColors.kGrey,
+                                    color: selectedIndex == index
+                                        ? CustomColors.kPrimary
+                                        : CustomColors.kBackground,
+                                    borderColor: selectedIndex == index
+                                        ? CustomColors.kPrimary
+                                        : CustomColors.kGrey.withOpacity(0.3),
+                                    onPress: () {
+                                      setState(() {
+                                        if (index == 0) {
+                                          productCategory = ProductCategory.all;
+                                        }
+                                        if (index == 1) {
+                                          productCategory =
+                                              ProductCategory.women;
+                                          productCategoryList = pc
+                                              .allproductList!
+                                              .where((element) =>
+                                                  element.productCategory ==
+                                                  ProductCategory.women)
+                                              .toList();
+                                        }
+                                        if (index == 2) {
+                                          productCategory = ProductCategory.men;
+                                          productCategoryList = pc
+                                              .allproductList!
+                                              .where((element) =>
+                                                  element.productCategory ==
+                                                  ProductCategory.men)
+                                              .toList();
+                                        }
+                                        if (index == 3) {
+                                          productCategory =
+                                              ProductCategory.kids;
+                                          productCategoryList = pc
+                                              .allproductList!
+                                              .where((element) =>
+                                                  element.productCategory ==
+                                                  ProductCategory.kids)
+                                              .toList();
+                                        }
+                                        selectedIndex = index;
+                                      });
+                                    },
+                                    title: categories[index],
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return SizedBox(width: 12.w);
+                                },
+                                itemCount: categories.length),
+                          ),
+                          SizedBox(height: 30.h),
+                          Row(
+                            children: [
+                              Text(
+                                'Most Popular',
+                                style: CustomTextStyles.kBold20
+                                    .copyWith(color: CustomColors.kPrimary),
+                              ),
+                              const Spacer(),
+                              CustomTextButton(
+                                  text: "See All",
+                                  onPressed: () {
+                                    // Get.to(() => HomeMostPopular());
+                                  }),
+                            ],
+                          ),
+                          SizedBox(height: 24.h),
+                          ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: productCategory == ProductCategory.all
+                                ? pc.allproductList?.length ?? 0
+                                : productCategoryList?.length ?? 0,
+                            itemBuilder: (BuildContext context, int index) {
+                              return HomePageCard(
+                                onPressed: () {
+                                  Get.to(() => DetailProductScreen(
+                                      product:
+                                          productCategory == ProductCategory.all
+                                              ? pc.allproductList![index]
+                                              : productCategoryList![index]));
+                                },
+                                favoriteCallback: () async {
+                                  pc.savedProductsIds!.contains(
+                                          pc.allproductList![index].productId)
+                                      ? await pc.deletefromFavourite(
+                                          productId: productCategory ==
+                                                  ProductCategory.all
+                                              ? pc.allproductList![index]
+                                                  .productId
+                                              : productCategoryList![index]
+                                                  .productId)
+                                      : await pc.addToFavourite(
+                                          productId: productCategory ==
+                                                  ProductCategory.all
+                                              ? pc.allproductList![index]
+                                                  .productId
+                                              : productCategoryList![index]
+                                                  .productId);
+                                },
+                                isLike: pc.savedProductsIds!.contains(
+                                        pc.allproductList![index].productId)
+                                    ? CustomColors.kError
+                                    : CustomColors.kDivider,
+                                product: productCategory == ProductCategory.all
+                                    ? pc.allproductList![index]
+                                    : productCategoryList![index],
+                              );
+                            },
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return SizedBox(height: 20.h);
+                            },
+                          )
+                        ],
                       );
-              })
+              }),
             ]));
   }
 }
