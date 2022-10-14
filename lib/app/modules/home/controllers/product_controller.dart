@@ -45,24 +45,25 @@ class ProductController extends GetxController {
     });
   }
 
-  Future<void> addToFavourite({required String productId}) async {
+  Future<void> addToFavourite({required Product product}) async {
     try {
       await db.usersCollection
           .doc(user.currentUser!.uid)
           .collection('favorites')
-          .doc(productId)
-          .set({'DateTime': DateTime.now()}).then((value) => print("Added"));
+          .doc(product.productId)
+          .set(product.toMap())
+          .then((value) => print("Added"));
     } on Exception catch (e) {
       Get.snackbar('Error', e.toString());
     }
   }
 
-  Future<void> deletefromFavourite({required String productId}) async {
+  Future<void> deletefromFavourite({required Product product}) async {
     try {
       await db.usersCollection
           .doc(user.currentUser!.uid)
           .collection('favorites')
-          .doc(productId)
+          .doc(product.productId)
           .delete()
           .then((value) => print('Deleted'));
     } on Exception catch (e) {
@@ -70,12 +71,24 @@ class ProductController extends GetxController {
     }
   }
 
+  Stream<List<Product>> getFavoriteProducts() {
+    return db.usersCollection
+        .doc(user.currentUser!.uid)
+        .collection('favorites')
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Product.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+    });
+  }
+
   @override
   void onInit() {
     super.onInit();
     products.bindStream(getAllProducts());
     _savedProductsIds.bindStream(getFavoriteItem());
-    print(_savedProductsIds);
+    _savedProducts.bindStream(getFavoriteProducts());
   }
 }
 //

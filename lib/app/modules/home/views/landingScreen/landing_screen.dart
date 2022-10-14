@@ -139,7 +139,7 @@ class _LandingPageState extends State<LandingPage> {
         screens: [
           HomePage(),
           DicoverScreen(),
-          Text('WishList'),
+          WishListScreen(),
           Text('History'),
           ProfileScreen()
         ],

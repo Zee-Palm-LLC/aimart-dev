@@ -1,61 +1,67 @@
-// import 'package:aimart_dev/app/modules/home/views/home/home_screen.dart';
-// import 'package:aimart_dev/app/modules/home/widgets/appbar/primary_appbar.dart';
-// import 'package:aimart_dev/app/modules/home/widgets/wishlist/wishlist_card.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:aimart_dev/app/modules/home/models/product_model.dart';
+import 'package:aimart_dev/app/modules/home/widgets/appbar/primary_appbar.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
-// import '../../../../data/constants/constants.dart';
-// import '../../models/product_model.dart';
-// import '../../widgets/textfields/search_bar.dart';
+import '../../../../data/constants/constants.dart';
 
-// class WishListScreen extends StatefulWidget {
-//   WishListScreen({Key? key}) : super(key: key);
+import '../../controllers/product_controller.dart';
+import '../../widgets/textfields/search_bar.dart';
+import '../../widgets/widgets.dart';
 
-//   @override
-//   State<WishListScreen> createState() => _WishListScreenState();
-// }
+class WishListScreen extends StatefulWidget {
+  WishListScreen({Key? key}) : super(key: key);
 
-// class _WishListScreenState extends State<WishListScreen> {
-//   final TextEditingController _search = TextEditingController();
-//   int isFavourite = -1;
+  @override
+  State<WishListScreen> createState() => _WishListScreenState();
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: primaryAppbar(title: 'Wishlist Item'),
-//         body: Column(children: [
-//           SizedBox(height: 20.h),
-//           Padding(
-//             padding: EdgeInsets.symmetric(horizontal: 28.w),
-//             child: SearchBar(
-//               controller: _search,
-//               hintText: 'Search id order in here..',
-//             ),
-//           ),
-//           SizedBox(height: 24.h),
-//           Expanded(
-//             child: ListView.separated(
-//               padding: EdgeInsets.symmetric(horizontal: 28.h),
-//               separatorBuilder: (BuildContext context, int index) {
-//                 return SizedBox(height: 20.h);
-//               },
-//               itemCount: favouriteList.length,
-//               itemBuilder: (BuildContext context, int index) {
-//                 return WishListCard(
-//                   product: favouriteList[index],
-//                   onPressed: () {
-//                     favouriteList.contains(products[index])
-//                         ? favouriteList.remove(products[index])
-//                         : favouriteList.add(products[index]);
-//                     setState(() {});
-//                   },
-//                   isFavourite: favouriteList.contains(products[index])
-//                       ? CustomColors.kError
-//                       : CustomColors.kDivider,
-//                 );
-//               },
-//             ),
-//           )
-//         ]));
-//   }
-// }
+class _WishListScreenState extends State<WishListScreen> {
+  final TextEditingController _search = TextEditingController();
+  ProductController pc = Get.find<ProductController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: primaryAppbar(title: 'Wishlist Item'),
+        body: Obx(() {
+          return pc.savedProducts.isEmpty
+              ? Center(
+                  child: Text(
+                    'No Favourite List',
+                    style: CustomTextStyles.kBold20,
+                  ),
+                )
+              : Column(children: [
+                  SizedBox(height: 20.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 28.w),
+                    child: SearchBar(
+                      controller: _search,
+                      hintText: 'Search id order in here..',
+                    ),
+                  ),
+                  SizedBox(height: 24.h),
+                  Expanded(
+                    child: ListView.separated(
+                      padding: EdgeInsets.symmetric(horizontal: 28.h),
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(height: 20.h);
+                      },
+                      itemCount: pc.savedProducts.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return WishListCard(
+                            product: pc.savedProducts[index],
+                            onPressed: () async {
+                              await pc.deletefromFavourite(
+                                  product: pc.savedProducts[index]);
+                            },
+                            isFavourite: CustomColors.kError);
+                      },
+                    ),
+                  )
+                ]);
+        }));
+  }
+}

@@ -363,19 +363,15 @@ class _HomePageState extends State<HomePage> {
                                   pc.savedProductsIds!.contains(
                                           pc.allproductList![index].productId)
                                       ? await pc.deletefromFavourite(
-                                          productId: productCategory ==
+                                          product: productCategory ==
                                                   ProductCategory.all
                                               ? pc.allproductList![index]
-                                                  .productId
-                                              : productCategoryList![index]
-                                                  .productId)
+                                              : productCategoryList![index])
                                       : await pc.addToFavourite(
-                                          productId: productCategory ==
+                                          product: productCategory ==
                                                   ProductCategory.all
                                               ? pc.allproductList![index]
-                                                  .productId
-                                              : productCategoryList![index]
-                                                  .productId);
+                                              : productCategoryList![index]);
                                 },
                                 isLike: pc.savedProductsIds!.contains(
                                         pc.allproductList![index].productId)
