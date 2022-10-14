@@ -17,4 +17,7 @@ class DatabaseService {
 
   CollectionReference productsCollection =
       FirebaseFirestore.instance.collection('Products');
+
+  CollectionReference cartCollection =
+      FirebaseFirestore.instance.collection('Carts');
 }
