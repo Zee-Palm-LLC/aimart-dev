@@ -1,3 +1,5 @@
+import 'package:aimart_dev/app/modules/home/controllers/cart_controller.dart';
+import 'package:aimart_dev/app/modules/home/models/cart_model.dart';
 import 'package:aimart_dev/app/modules/home/models/product_model.dart';
 import 'package:aimart_dev/app/modules/home/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,7 @@ class DetailProductScreen extends StatefulWidget {
 }
 
 class _DetailProductScreenState extends State<DetailProductScreen> {
+  CartController cartController = Get.find<CartController>();
   PageController controller = PageController();
   int sizeIndex = 0;
 
@@ -231,7 +234,10 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               height: 62.h,
               child: PrimaryButton(
                 onPressed: () {
-                  Get.to(() => CartScreen());
+                  cartController.addtoCart(
+                  cart: CartModel(cartItemModel: [CartItemModel(product: widget.product, quantity: 1)] ));
+
+                 
                 },
                 color: CustomColors.kPrimary,
                 child: Text(

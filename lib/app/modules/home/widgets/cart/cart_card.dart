@@ -1,3 +1,4 @@
+import 'package:aimart_dev/app/modules/home/models/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,11 +6,13 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../data/constants/constants.dart';
 
 class CartCard extends StatelessWidget {
+  final CartItemModel cartItemModel;
   final VoidCallback incrementCallback;
   final VoidCallback decrementCallback;
   final String text;
   const CartCard(
       {Key? key,
+      required this.cartItemModel,
       required this.incrementCallback,
       required this.decrementCallback,
       required this.text})
@@ -29,7 +32,7 @@ class CartCard extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.r),
                 image: DecorationImage(
-                    image: AssetImage(CustomAssets.kproduct1),
+                    image: NetworkImage(cartItemModel.product.productImages[0]),
                     fit: BoxFit.cover)),
             child: Align(
                 alignment: Alignment.bottomRight,
@@ -51,7 +54,7 @@ class CartCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Mambo Sport Premium',
+                      cartItemModel.product.productName,
                       style: CustomTextStyles.kBold14
                           .copyWith(color: CustomColors.kDarkBblue),
                     ),
@@ -65,7 +68,7 @@ class CartCard extends StatelessWidget {
                         ))
                   ],
                 ),
-                Text('T-Shirt',
+                Text(cartItemModel.product.productType,
                     style: CustomTextStyles.kBold12
                         .copyWith(color: CustomColors.kGrey)),
                 const Spacer(),
@@ -73,7 +76,7 @@ class CartCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '\$89,99',
+                      '\$${cartItemModel.product.productPrice}',
                       style: CustomTextStyles.kBold14
                           .copyWith(color: CustomColors.kPrimary),
                     ),

@@ -1,3 +1,5 @@
+import 'package:aimart_dev/app/modules/home/controllers/cart_controller.dart';
+import 'package:aimart_dev/app/modules/home/models/cart_model.dart';
 import 'package:aimart_dev/app/modules/home/views/checkout/checkout.dart';
 import 'package:aimart_dev/app/modules/home/widgets/appbar/secondary_appbar.dart';
 import 'package:aimart_dev/app/modules/home/widgets/cart/cart_card.dart';
@@ -16,23 +18,36 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  CartController cartController = Get.find<CartController>();
   int itemsInCart = 0;
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: secondaryAppbar(title: 'Cart'),
-      body: ListView.separated(
-          padding: EdgeInsets.symmetric(horizontal: 28.h, vertical: 20.h),
-          itemBuilder: ((context, index) {
-            return CartCard(
-              decrementCallback: () {},
-              text: itemsInCart.toString(),
-              incrementCallback: () {},
-            );
+      body: StreamBuilder<CartModel>(
+          stream: cartController.currentcartStream(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            CartModel cartmodel = snapshot.data!;
+            return ListView.separated(
+                padding: EdgeInsets.symmetric(horizontal: 28.h, vertical: 20.h),
+                itemBuilder: ((context, index) {
+                  return CartCard(
+                    decrementCallback: () {},
+                    text: itemsInCart.toString(),
+                    incrementCallback: () {},
+                    cartItemModel: cartmodel.cartItemModel[index],
+                  );
+                }),
+                separatorBuilder: (context, index) => SizedBox(height: 10.h),
+                itemCount: cartmodel.cartItemModel.length);
           }),
-          separatorBuilder: (context, index) => SizedBox(height: 10.h),
-          itemCount: 3),
       bottomNavigationBar: Container(
         height: 90.h,
         padding: EdgeInsets.symmetric(horizontal: 28.w),
