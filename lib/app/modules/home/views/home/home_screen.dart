@@ -15,7 +15,9 @@ import '../../controllers/user_controller.dart';
 import '../../models/product_model.dart';
 import '../../models/user_model.dart';
 import '../../widgets/widgets.dart';
+import '../search/search_screen.dart';
 import 'flash_sale_screen.dart';
+import 'home_mostpopular.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -131,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                       child: InkWell(
                     onTap: () {
-                      // Get.to(() => SearchScreen());
+                      Get.to(() => SearchScreen());
                     },
                     child: Container(
                       height: 50.h,
@@ -259,7 +261,6 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 24.h),
               Obx(() {
-                ;
                 return pc.allproductList?.isEmpty ?? true
                     ? Center(
                         child: Text("No Products",
@@ -339,7 +340,7 @@ class _HomePageState extends State<HomePage> {
                               CustomTextButton(
                                   text: "See All",
                                   onPressed: () {
-                                    // Get.to(() => HomeMostPopular());
+                                    Get.to(() => HomeMostPopular());
                                   }),
                             ],
                           ),

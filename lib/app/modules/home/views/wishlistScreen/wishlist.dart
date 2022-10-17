@@ -29,7 +29,7 @@ class _WishListScreenState extends State<WishListScreen> {
           return pc.savedProducts.isEmpty
               ? Center(
                   child: Text(
-                    'No Favourite List',
+                    'No Favorite List',
                     style: CustomTextStyles.kBold20,
                   ),
                 )

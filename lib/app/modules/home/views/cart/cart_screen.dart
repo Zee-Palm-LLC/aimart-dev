@@ -20,7 +20,6 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   CartController cartController = Get.find<CartController>();
   int itemsInCart = 0;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +38,15 @@ class _CartScreenState extends State<CartScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 28.h, vertical: 20.h),
                 itemBuilder: ((context, index) {
                   return CartCard(
-                    decrementCallback: () {},
-                    text: itemsInCart.toString(),
-                    incrementCallback: () {},
+                    decrementCallback: () async {
+                      await cartController.decreaseCartItemQuantity(
+                          cartmodel.cartItemModel[index].product.productId);
+                    },
+                    text: cartmodel.cartItemModel[index].quantity.toString(),
+                    incrementCallback: () async {
+                      await cartController.increaseCartItemQuantity(
+                          cartmodel.cartItemModel[index].product.productId);
+                    },
                     cartItemModel: cartmodel.cartItemModel[index],
                   );
                 }),

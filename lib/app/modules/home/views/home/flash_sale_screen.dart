@@ -1,4 +1,5 @@
 import 'package:aimart_dev/app/modules/home/models/product_model.dart';
+import 'package:aimart_dev/app/modules/home/views/discover/detail_product_screen.dart';
 import 'package:aimart_dev/app/modules/home/widgets/home/sale_card_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -88,9 +89,23 @@ class _HomeFlashSaleState extends State<HomeFlashSale> {
                           itemCount: saleItems?.length ?? 0,
                           itemBuilder: (BuildContext context, int index) {
                             return ProductSaleCard(
+                              onTap: () {
+                                Get.to(() => DetailProductScreen(
+                                    product: saleItems![index]));
+                              },
                               product: saleItems![index],
-                              favoriteCallBack: () {},
-                              isFavourite: CustomColors.kDivider,
+                              favoriteCallBack: () async {
+                                pc.savedProductsIds!.contains(
+                                        pc.allproductList![index].productId)
+                                    ? await pc.deletefromFavourite(
+                                        product: saleItems[index])
+                                    : await pc.addToFavourite(
+                                        product: saleItems[index]);
+                              },
+                              isFavourite: pc.savedProductsIds!.contains(
+                                      pc.allproductList![index].productId)
+                                  ? CustomColors.kError
+                                  : CustomColors.kDivider,
                             );
                           },
                         ),
@@ -107,9 +122,23 @@ class _HomeFlashSaleState extends State<HomeFlashSale> {
                             itemCount: saleItems?.length ?? 0,
                             itemBuilder: (BuildContext ctx, index) {
                               return SaleCardGrid(
+                                onTap: () {
+                                  Get.to(() => DetailProductScreen(
+                                      product: saleItems![index]));
+                                },
                                 product: saleItems![index],
-                                fovoriteCallBack: () {},
-                                isFavourite: CustomColors.kDivider,
+                                fovoriteCallBack: () async {
+                                  pc.savedProductsIds!
+                                          .contains(saleItems[index].productId)
+                                      ? await pc.deletefromFavourite(
+                                          product: saleItems[index])
+                                      : await pc.addToFavourite(
+                                          product: saleItems[index]);
+                                },
+                                isFavourite: pc.savedProductsIds!
+                                        .contains(saleItems[index].productId)
+                                    ? CustomColors.kError
+                                    : CustomColors.kDivider,
                               );
                             }),
                       )

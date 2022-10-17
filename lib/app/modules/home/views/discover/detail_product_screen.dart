@@ -235,9 +235,11 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               child: PrimaryButton(
                 onPressed: () {
                   cartController.addtoCart(
-                  cart: CartModel(cartItemModel: [CartItemModel(product: widget.product, quantity: 1)] ));
-
-                 
+                      //add kro 1 element
+                      item: CartItemModel(
+                    product: widget.product,
+                    quantity: 1,
+                  ));
                 },
                 color: CustomColors.kPrimary,
                 child: Text(
