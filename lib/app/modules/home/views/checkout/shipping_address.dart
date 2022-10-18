@@ -1,22 +1,36 @@
+import 'dart:async';
+
 import 'package:aimart_dev/app/modules/home/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../data/constants/constants.dart';
 import '../../controllers/page_controller.dart';
 import '../../widgets/textfields/custom_textFormField.dart';
 
-class ShippingAddress extends StatelessWidget {
+class ShippingAddress extends StatefulWidget {
+  ShippingAddress({Key? key}) : super(key: key);
+
+  @override
+  State<ShippingAddress> createState() => _ShippingAddressState();
+}
+
+class _ShippingAddressState extends State<ShippingAddress> {
   final _fullName = TextEditingController();
   final _phone = TextEditingController();
   final _city = TextEditingController();
   final _region = TextEditingController();
   final _postalCode = TextEditingController();
   final _country = TextEditingController();
-
   PagesController pc = Get.find<PagesController>();
-  ShippingAddress({Key? key}) : super(key: key);
+
+  @override
+  void initState() {
+    markers.addAll(_list);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,13 +117,22 @@ class ShippingAddress extends StatelessWidget {
               .copyWith(color: CustomColors.kDarkBblue)),
       SizedBox(height: 10.h),
       Container(
-        height: 133.h,
-        decoration: BoxDecoration(
+          height: 153.h,
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
-            border: Border.all(color: CustomColors.kDivider),
-            image: DecorationImage(
-                image: AssetImage(CustomAssets.kmap), fit: BoxFit.cover)),
-      ),
+          ),
+          child: GoogleMap(
+            initialCameraPosition: position,
+            mapType: MapType.normal,
+            myLocationEnabled: true,
+            myLocationButtonEnabled: false,
+            zoomControlsEnabled: true,
+            zoomGesturesEnabled: true,
+            markers: Set.of(markers),
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+          )),
       SizedBox(height: 30.h),
       PrimaryButton(
           onPressed: () {
@@ -124,4 +147,17 @@ class ShippingAddress extends StatelessWidget {
           ))
     ]);
   }
+
+  CameraPosition position =
+      const CameraPosition(target: LatLng(30.181459, 71.492157), zoom: 10.15);
+
+  Completer<GoogleMapController> _controller = Completer();
+  List<Marker> markers = [];
+  final List<Marker> _list = const [
+    Marker(
+      markerId: MarkerId('1'),
+      position: LatLng(30.181459, 71.492157),
+      infoWindow: InfoWindow(title: 'My Position'),
+    )
+  ];
 }

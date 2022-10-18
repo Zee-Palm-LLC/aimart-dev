@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
   }
 
-  late bool _isFirstRun;
+  bool _isFirstRun = true;
 
   void _checkFirstRun() async {
     bool ifr = await IsFirstRun.isFirstRun();

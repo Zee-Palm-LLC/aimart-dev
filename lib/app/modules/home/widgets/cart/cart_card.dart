@@ -34,16 +34,6 @@ class CartCard extends StatelessWidget {
                 image: DecorationImage(
                     image: NetworkImage(cartItemModel.product.productImages[0]),
                     fit: BoxFit.cover)),
-            child: Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  height: 26.h,
-                  width: 26.w,
-                  padding: EdgeInsets.all(5.h),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: CustomColors.kWhite),
-                  child: SvgPicture.asset(CustomAssets.kdone),
-                )),
           ),
           SizedBox(width: 20.w),
           Expanded(
