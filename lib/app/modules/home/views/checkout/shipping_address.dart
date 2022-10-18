@@ -1,11 +1,14 @@
 import 'dart:async';
 
+
 import 'package:aimart_dev/app/modules/home/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 
 import '../../../../data/constants/constants.dart';
 import '../../controllers/page_controller.dart';
@@ -26,6 +29,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
   final _postalCode = TextEditingController();
   final _country = TextEditingController();
   PagesController pc = Get.find<PagesController>();
+  String address = 'search';
 
   @override
   void initState() {
@@ -52,8 +56,10 @@ class _ShippingAddressState extends State<ShippingAddress> {
                           zoom: 14,
                         );
                         controller.animateCamera(CameraUpdate.newCameraPosition(_kGooglePlex));
-
-
+                        List<Placemark> placemarks = await placemarkFromCoordinates(value.latitude, value.longitude);
+                         Placemark place = placemarks[0];
+                         address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+                        print(address);
                         setState(() {
 
                         });
