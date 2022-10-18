@@ -32,6 +32,7 @@ dependencies:
   is_first_run: ^1.0.0
   algolia: ^1.1.1
   google_maps_flutter: ^2.2.1
+  geolocator: ^9.0.2
 
 dev_dependencies: 
   flutter_lints: ^2.0.0

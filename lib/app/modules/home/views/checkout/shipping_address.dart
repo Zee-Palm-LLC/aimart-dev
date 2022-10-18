@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:aimart_dev/app/modules/home/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -30,6 +31,43 @@ class _ShippingAddressState extends State<ShippingAddress> {
   void initState() {
     markers.addAll(_list);
     super.initState();
+    loadinitialLocation();
+  }
+
+  loadinitialLocation() {
+     _getUserCurrentLocation().then((value) async {
+                        markers.add(
+                            Marker(
+                                markerId: const MarkerId('2'),
+                                position: LatLng(value.latitude ,value.longitude),
+                                infoWindow: const  InfoWindow(
+                                    title: 'Current Location'
+                                )
+                            )
+                        );
+                        final GoogleMapController controller = await _controller.future;
+
+                        CameraPosition _kGooglePlex =  CameraPosition(
+                          target: LatLng(value.latitude ,value.longitude),
+                          zoom: 14,
+                        );
+                        controller.animateCamera(CameraUpdate.newCameraPosition(_kGooglePlex));
+
+
+                        setState(() {
+
+                        });
+                      });
+  }
+
+  Future<Position> _getUserCurrentLocation() async {
+    await Geolocator.requestPermission()
+        .then((value) {})
+        .onError((error, stackTrace) {
+      print(error.toString());
+    });
+
+    return await Geolocator.getCurrentPosition();
   }
 
   @override
