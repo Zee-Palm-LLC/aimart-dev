@@ -36,7 +36,18 @@ class CartItemModel {
 }
 
 class CartModel {
-  List<CartItemModel> cartItemModel;
+  List<CartItemModel>
+      cartItemModel; //name aesa rkha kro jo sahi lgy database me .. sirf items rkhna tha
+
+  int get totalAmount {
+    int amount = 0;
+    for (var element in cartItemModel) {
+      int productTotalPrice = element.product.productPrice *
+          element.quantity; // price could be double...
+      amount += productTotalPrice;
+    }
+    return amount;
+  }
 
   CartModel({
     required this.cartItemModel,

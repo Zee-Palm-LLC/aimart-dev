@@ -12,7 +12,7 @@ class HomeBinding extends Bindings {
     Get.lazyPut<PagesController>(() => PagesController());
     Get.lazyPut<AuthController>(() => AuthController());
     Get.lazyPut<UserController>(() => UserController());
-    Get.lazyPut<ProductController>(() => ProductController());
-    Get.lazyPut<CartController>(() => CartController());
+    Get.lazyPut<ProductController>(() => ProductController(), fenix: true);
+    Get.lazyPut<CartController>(() => CartController(), fenix: true);
   }
 }

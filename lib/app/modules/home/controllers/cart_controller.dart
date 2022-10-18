@@ -8,7 +8,8 @@ import 'package:get/get.dart';
 class CartController extends GetxController {
   DatabaseService db = DatabaseService();
   FirebaseAuth user = FirebaseAuth.instance;
-  RxDouble totalCartPrice = 0.0.obs;
+  Rx<List<CartModel>?> products = Rx<List<CartModel>?>(null);
+  List<CartModel>? get allproductList => products.value;
 
   Future<void> addtoCart({required CartItemModel item}) async {
     //camelcase ka khyal kyya kro addto ni addTo "hr 2nd word ka first letter capital"
@@ -32,7 +33,7 @@ class CartController extends GetxController {
     }
   }
 
-  Stream<CartModel> currentcartStream() {
+  Stream<CartModel> currentCartStream() {
     return db.cartCollection.doc(user.currentUser!.uid).snapshots().map(
         (event) => CartModel.fromMap(event.data() as Map<String, dynamic>));
   }
