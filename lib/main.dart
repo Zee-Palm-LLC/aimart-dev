@@ -1,3 +1,5 @@
+import 'package:aimart_dev/app/data/helper/paymentstrip.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:aimart_dev/app/modules/home/bindings/home_binding.dart';
 import 'package:aimart_dev/app/modules/home/views/splash/splash_screen.dart';
 import 'package:aimart_dev/firebase_options.dart';
@@ -12,6 +14,7 @@ int? initScreen;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  Stripe.publishableKey = stripePublishableKey;
   runApp(const MyApp());
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
