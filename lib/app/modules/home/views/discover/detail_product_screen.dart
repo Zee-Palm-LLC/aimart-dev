@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 
 import '../../../../data/constants/constants.dart';
 import '../../widgets/discover/detail_product.dart';
-import '../cart/cart_screen.dart';
 
 class DetailProductScreen extends StatefulWidget {
   Product product;
@@ -36,7 +35,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
           style: CustomTextStyles.kMedium16.copyWith(
               fontSize: 17,
               fontWeight: FontWeight.w700,
-              color: CustomColors.kDarkBblue),
+              color: CustomColors.kDarkBlue),
         ),
         centerTitle: true,
         actions: [
@@ -80,14 +79,14 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
           Text(
             widget.product.productName,
             style: CustomTextStyles.kBold20
-                .copyWith(color: CustomColors.kDarkBblue),
+                .copyWith(color: CustomColors.kDarkBlue),
           ),
           SizedBox(height: 5.h),
           Text(widget.product.productType, style: CustomTextStyles.kMedium16),
           SizedBox(height: 33.h),
           Text('Size :',
               style: CustomTextStyles.kBold20
-                  .copyWith(color: CustomColors.kDarkBblue)),
+                  .copyWith(color: CustomColors.kDarkBlue)),
           SizedBox(height: 12.h),
           SizedBox(
             height: 42.h,
@@ -121,7 +120,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                           fontWeight: FontWeight.w600,
                           color: sizeIndex == index
                               ? CustomColors.kfullWhite
-                              : CustomColors.kDarkBblue,
+                              : CustomColors.kDarkBlue,
                         ),
                       ),
                     ),
@@ -133,7 +132,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
           SizedBox(height: 33.h),
           Text('Description',
               style: CustomTextStyles.kBold20
-                  .copyWith(color: CustomColors.kDarkBblue)),
+                  .copyWith(color: CustomColors.kDarkBlue)),
           SizedBox(height: 12.h),
           Text(widget.product.description,
               style: CustomTextStyles.kMedium12
@@ -141,7 +140,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
           SizedBox(height: 32.h),
           Text('Review',
               style: CustomTextStyles.kBold20
-                  .copyWith(color: CustomColors.kDarkBblue)),
+                  .copyWith(color: CustomColors.kDarkBlue)),
           SizedBox(width: 6.w),
           Row(
             children: [

@@ -28,7 +28,7 @@ class _HomeFlashSaleState extends State<HomeFlashSale> {
             onPressed: () {},
             icon: Icon(
               Icons.search,
-              color: CustomColors.kDarkBblue,
+              color: CustomColors.kDarkBlue,
             ),
           ),
           Padding(

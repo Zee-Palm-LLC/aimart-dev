@@ -96,7 +96,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
           //Info
           Text('Full Name',
               style: CustomTextStyles.kBold16
-                  .copyWith(color: CustomColors.kDarkBblue)),
+                  .copyWith(color: CustomColors.kDarkBlue)),
           SizedBox(height: 8.h),
           CustomTextFormField(
               controller: _nameController,
@@ -113,7 +113,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
           SizedBox(height: 20.h),
           Text('Username',
               style: CustomTextStyles.kBold16
-                  .copyWith(color: CustomColors.kDarkBblue)),
+                  .copyWith(color: CustomColors.kDarkBlue)),
           SizedBox(height: 8.h),
           CustomTextFormField(
               controller: _usernameController,
@@ -130,7 +130,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
           SizedBox(height: 20.h),
           Text('E-Mail',
               style: CustomTextStyles.kBold16
-                  .copyWith(color: CustomColors.kDarkBblue)),
+                  .copyWith(color: CustomColors.kDarkBlue)),
           SizedBox(height: 8.h),
           CustomTextFormField(
             controller: _emailController,
@@ -151,7 +151,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
           SizedBox(height: 20.h),
           Text('Bio',
               style: CustomTextStyles.kBold16
-                  .copyWith(color: CustomColors.kDarkBblue)),
+                  .copyWith(color: CustomColors.kDarkBlue)),
           SizedBox(height: 8.h),
           CustomTextFormField(
               controller: _bioController,

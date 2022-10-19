@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../../../data/constants/constants.dart';
 
@@ -9,7 +8,7 @@ PreferredSizeWidget primaryAppbar({required String title}) {
     backgroundColor: CustomColors.kLightBackground,
     title: Text(
       title,
-      style: CustomTextStyles.kBold20.copyWith(color: CustomColors.kDarkBblue),
+      style: CustomTextStyles.kBold20.copyWith(color: CustomColors.kDarkBlue),
     ),
   );
 }

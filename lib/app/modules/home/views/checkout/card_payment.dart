@@ -24,7 +24,7 @@ class CardPaymentScreen extends StatelessWidget {
           children: [
             Text("Payment Method",
                 style: CustomTextStyles.kBold20
-                    .copyWith(color: CustomColors.kDarkBblue)),
+                    .copyWith(color: CustomColors.kDarkBlue)),
             CustomTextButton(onPressed: () {}, text: 'Edit')
           ],
         ),
@@ -43,7 +43,7 @@ class CardPaymentScreen extends StatelessWidget {
           ),
           title: Text('Credit Card',
               style: CustomTextStyles.kMedium12
-                  .copyWith(color: CustomColors.kDarkBblue)),
+                  .copyWith(color: CustomColors.kDarkBlue)),
           trailing: Padding(
               padding: EdgeInsets.only(right: 12.h),
               child: SvgPicture.asset(CustomAssets.karrowDown)),
@@ -72,7 +72,7 @@ class CardPaymentScreen extends StatelessWidget {
           children: [
             Text("Shipping Address",
                 style: CustomTextStyles.kBold20
-                    .copyWith(color: CustomColors.kDarkBblue)),
+                    .copyWith(color: CustomColors.kDarkBlue)),
             CustomTextButton(onPressed: () {}, text: 'Edit')
           ],
         ),
@@ -96,7 +96,7 @@ class CardPaymentScreen extends StatelessWidget {
         SizedBox(height: 20.h),
         Text("Order Details",
             style: CustomTextStyles.kBold20
-                .copyWith(color: CustomColors.kDarkBblue)),
+                .copyWith(color: CustomColors.kDarkBlue)),
         SizedBox(height: 10.h),
         ListView.separated(
           itemCount: 3,
@@ -111,7 +111,7 @@ class CardPaymentScreen extends StatelessWidget {
                 Text(
                   'Mambo Sport Premium',
                   style: CustomTextStyles.kBold12
-                      .copyWith(color: CustomColors.kDarkBblue),
+                      .copyWith(color: CustomColors.kDarkBlue),
                 ),
                 SizedBox(height: 8.h),
                 Row(
@@ -136,7 +136,7 @@ class CardPaymentScreen extends StatelessWidget {
         SizedBox(height: 20.h),
         Text("Payment Details",
             style: CustomTextStyles.kBold20
-                .copyWith(color: CustomColors.kDarkBblue)),
+                .copyWith(color: CustomColors.kDarkBlue)),
         SizedBox(height: 20.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

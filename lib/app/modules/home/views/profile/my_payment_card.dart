@@ -24,7 +24,7 @@ class MyPaymentScreen extends StatelessWidget {
           Text(
             'My Credit Card',
             style: CustomTextStyles.kBold20
-                .copyWith(color: CustomColors.kDarkBblue),
+                .copyWith(color: CustomColors.kDarkBlue),
           ),
           SizedBox(height: 28.h),
           CreditCard(
@@ -65,7 +65,7 @@ class MyPaymentScreen extends StatelessWidget {
           Text(
             "History Transaction",
             style: CustomTextStyles.kBold20
-                .copyWith(color: CustomColors.kDarkBblue),
+                .copyWith(color: CustomColors.kDarkBlue),
           ),
           SizedBox(height: 28.h),
           ListView.separated(

@@ -1,7 +1,6 @@
 import 'package:aimart_dev/app/modules/home/views/checkout/selectpayment_method.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../data/constants/constants.dart';
 
@@ -38,7 +37,7 @@ class PaymentMethodsRadioListTile extends StatelessWidget {
           SizedBox(width: 10.w),
           Text(payment.paymentName,
               style: CustomTextStyles.kMedium12
-                  .copyWith(color: CustomColors.kDarkBblue)),
+                  .copyWith(color: CustomColors.kDarkBlue)),
         ],
       ),
       value: value,

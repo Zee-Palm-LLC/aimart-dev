@@ -53,7 +53,7 @@ class ProfileScreen extends StatelessWidget {
             Center(
               child: Text(user.fullName ?? '',
                   style: CustomTextStyles.kBold20
-                      .copyWith(color: CustomColors.kDarkBblue)),
+                      .copyWith(color: CustomColors.kDarkBlue)),
             ),
             SizedBox(height: 4.h),
             Center(

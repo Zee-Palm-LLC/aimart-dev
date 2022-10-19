@@ -19,13 +19,13 @@ PreferredSizeWidget actionsAppbar(
           },
           child: Icon(
             Icons.arrow_back,
-            color: CustomColors.kDarkBblue,
+            color: CustomColors.kDarkBlue,
           )),
     ),
     elevation: 0,
     title: Text(
       title,
-      style: CustomTextStyles.kBold20.copyWith(color: CustomColors.kDarkBblue),
+      style: CustomTextStyles.kBold20.copyWith(color: CustomColors.kDarkBlue),
     ),
   );
 }

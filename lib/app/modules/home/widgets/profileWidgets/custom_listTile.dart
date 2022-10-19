@@ -25,8 +25,8 @@ class CustomListTile extends StatelessWidget {
         ],
       ),
       title: Text(text,
-          style: CustomTextStyles.kBold16
-              .copyWith(color: CustomColors.kDarkBblue)),
+          style:
+              CustomTextStyles.kBold16.copyWith(color: CustomColors.kDarkBlue)),
       trailing: SvgPicture.asset(CustomAssets.karrowForward),
     );
   }

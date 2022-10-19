@@ -21,6 +21,6 @@ PreferredSizeWidget customAppBarStepper() {
     backgroundColor: CustomColors.kLightBackground,
     title: Text('Checkout',
         style:
-            CustomTextStyles.kBold20.copyWith(color: CustomColors.kDarkBblue)),
+            CustomTextStyles.kBold20.copyWith(color: CustomColors.kDarkBlue)),
   );
 }

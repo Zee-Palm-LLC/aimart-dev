@@ -40,7 +40,7 @@ class _SelectPaymentMethodState extends State<SelectPaymentMethod> {
                 SizedBox(height: 32.h),
                 Text("Payment Method",
                     style: CustomTextStyles.kBold20
-                        .copyWith(color: CustomColors.kDarkBblue)),
+                        .copyWith(color: CustomColors.kDarkBlue)),
                 SizedBox(height: 24.h),
                 ListView.builder(
                   shrinkWrap: true,
@@ -72,7 +72,7 @@ class _SelectPaymentMethodState extends State<SelectPaymentMethod> {
                       child: const Icon(Icons.more_horiz)),
                   title: Text('View more methods',
                       style: CustomTextStyles.kMedium12
-                          .copyWith(color: CustomColors.kDarkBblue)),
+                          .copyWith(color: CustomColors.kDarkBlue)),
                   trailing: Padding(
                     padding: EdgeInsets.only(right: 12.h),
                     child: SvgPicture.asset(CustomAssets.karrowForward),
@@ -100,7 +100,7 @@ class _SelectPaymentMethodState extends State<SelectPaymentMethod> {
                     SizedBox(height: 32.h),
                     Text("Payment Method",
                         style: CustomTextStyles.kBold20
-                            .copyWith(color: CustomColors.kDarkBblue)),
+                            .copyWith(color: CustomColors.kDarkBlue)),
                     SizedBox(height: 24.h),
                     ListTile(
                       contentPadding: EdgeInsets.zero,
@@ -116,7 +116,7 @@ class _SelectPaymentMethodState extends State<SelectPaymentMethod> {
                       ),
                       title: Text('Credit Card',
                           style: CustomTextStyles.kMedium12
-                              .copyWith(color: CustomColors.kDarkBblue)),
+                              .copyWith(color: CustomColors.kDarkBlue)),
                       trailing: Padding(
                           padding: EdgeInsets.only(right: 12.h),
                           child: SvgPicture.asset(CustomAssets.karrowDown)),
@@ -124,7 +124,7 @@ class _SelectPaymentMethodState extends State<SelectPaymentMethod> {
                     SizedBox(height: 20.h),
                     Text('Name on card',
                         style: CustomTextStyles.kBold14
-                            .copyWith(color: CustomColors.kDarkBblue)),
+                            .copyWith(color: CustomColors.kDarkBlue)),
                     SizedBox(height: 10.h),
                     CustomTextFormField(
                         controller: _name,
@@ -136,7 +136,7 @@ class _SelectPaymentMethodState extends State<SelectPaymentMethod> {
                     SizedBox(height: 20.h),
                     Text('Card Number',
                         style: CustomTextStyles.kBold14
-                            .copyWith(color: CustomColors.kDarkBblue)),
+                            .copyWith(color: CustomColors.kDarkBlue)),
                     SizedBox(height: 10.h),
                     CustomTextFormField(
                         controller: _cardNumber,
@@ -153,8 +153,8 @@ class _SelectPaymentMethodState extends State<SelectPaymentMethod> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Expired Date ',
-                                  style: CustomTextStyles.kBold14.copyWith(
-                                      color: CustomColors.kDarkBblue)),
+                                  style: CustomTextStyles.kBold14
+                                      .copyWith(color: CustomColors.kDarkBlue)),
                               SizedBox(height: 10.h),
                               CustomTextFormField(
                                   controller: _expiredDate,
@@ -172,8 +172,8 @@ class _SelectPaymentMethodState extends State<SelectPaymentMethod> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Security code',
-                                  style: CustomTextStyles.kBold14.copyWith(
-                                      color: CustomColors.kDarkBblue)),
+                                  style: CustomTextStyles.kBold14
+                                      .copyWith(color: CustomColors.kDarkBlue)),
                               SizedBox(height: 10.h),
                               CustomTextFormField(
                                   controller: _securityCode,
@@ -206,7 +206,7 @@ class _SelectPaymentMethodState extends State<SelectPaymentMethod> {
                             child: Text(
                               'My billing address is the  same  as my  shipping  address.',
                               style: CustomTextStyles.kBold12
-                                  .copyWith(color: CustomColors.kDarkBblue),
+                                  .copyWith(color: CustomColors.kDarkBlue),
                             ),
                           )
                         ],

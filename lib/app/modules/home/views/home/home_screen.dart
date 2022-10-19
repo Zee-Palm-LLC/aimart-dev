@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Text('Hello, ${user.fullName}',
                             style: CustomTextStyles.kBold16
-                                .copyWith(color: CustomColors.kDarkBblue)),
+                                .copyWith(color: CustomColors.kDarkBlue)),
                         SizedBox(height: 2.h),
                         Text(
                           'Find your best fashion here',

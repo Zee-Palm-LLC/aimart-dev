@@ -34,7 +34,7 @@ class _HomeMostPopularState extends State<HomeMostPopular> {
             onPressed: () {},
             icon: Icon(
               Icons.search,
-              color: CustomColors.kDarkBblue,
+              color: CustomColors.kDarkBlue,
             ),
           ),
           Padding(

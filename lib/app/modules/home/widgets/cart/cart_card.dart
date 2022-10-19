@@ -1,7 +1,6 @@
 import 'package:aimart_dev/app/modules/home/models/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../../../data/constants/constants.dart';
 
@@ -46,7 +45,7 @@ class CartCard extends StatelessWidget {
                     Text(
                       cartItemModel.product.productName,
                       style: CustomTextStyles.kBold14
-                          .copyWith(color: CustomColors.kDarkBblue),
+                          .copyWith(color: CustomColors.kDarkBlue),
                     ),
                     IconButton(
                         constraints: const BoxConstraints(),

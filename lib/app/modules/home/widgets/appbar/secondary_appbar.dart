@@ -16,7 +16,7 @@ PreferredSizeWidget secondaryAppbar({required String title}) {
         icon: SvgPicture.asset(CustomAssets.karrowbackAndroid)),
     title: Text(
       title,
-      style: CustomTextStyles.kBold20.copyWith(color: CustomColors.kDarkBblue),
+      style: CustomTextStyles.kBold20.copyWith(color: CustomColors.kDarkBlue),
     ),
   );
 }
