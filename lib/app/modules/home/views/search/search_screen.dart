@@ -74,160 +74,154 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         SizedBox(height: 20.h),
         isFilter
-            ? Obx(() {
-                return fc.filterProducts.isEmpty
-                    ? Center(
-                        child: Text("No Products",
-                            style: CustomTextStyles.kBold20))
-                    : Expanded(
-                        child: ListView.builder(
-                          itemCount: fc.filterProducts.length,
-                          itemBuilder: (BuildContext ctx, int index) {
-                            return InkWell(
-                              //show the problems
-                              onTap: () {},
-                              child: SizedBox(
-                                  height: 100.h,
-                                  width: Get.width,
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 100.h,
-                                          width: 100.w,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8.r),
-                                            image: DecorationImage(
-                                              image: NetworkImage(fc
-                                                  .filterProducts[index]
-                                                  .productImages
-                                                  .first),
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
+            ? FutureBuilder<List<Product>?>(
+                future: fc.getFilterProducts(
+                    category: ProductCategory.men,
+                    color: '0xFFFFFFFF', //show
+                    price: 79,
+                    sizes: 'L'),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  List<Product> filterList = snapshot.data!;
+                  print(filterList.length);
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: filterList.length,
+                      itemBuilder: (BuildContext ctx, int index) {
+                        return InkWell(
+                          //show the problems
+                          onTap: () {},
+                          child: SizedBox(
+                              height: 100.h,
+                              width: Get.width,
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: 100.h,
+                                      width: 100.w,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(8.r),
+                                        image: DecorationImage(
+                                          image: NetworkImage(filterList[index]
+                                              .productImages
+                                              .first),
+                                          fit: BoxFit.cover,
                                         ),
-                                        SizedBox(width: 20.h),
-                                        Expanded(
-                                          child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
-                                                        height: 28.h,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: fc
-                                                                      .filterProducts[
-                                                                          index]
+                                      ),
+                                    ),
+                                    SizedBox(width: 20.h),
+                                    Expanded(
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    height: 28.h,
+                                                    decoration: BoxDecoration(
+                                                      color: filterList[index]
+                                                                  .productTag ==
+                                                              Tagtype.trending
+                                                          ? CustomColors
+                                                              .kTrendingBlue
+                                                          : filterList[index]
                                                                       .productTag ==
                                                                   Tagtype
-                                                                      .trending
+                                                                      .discount
                                                               ? CustomColors
-                                                                  .kTrendingBlue
-                                                              : fc.filterProducts[index].productTag ==
+                                                                  .kdarkred
+                                                              : filterList[index]
+                                                                          .productTag ==
                                                                       Tagtype
-                                                                          .discount
+                                                                          .bestseller
                                                                   ? CustomColors
-                                                                      .kdarkred
-                                                                  : fc.filterProducts[index].productTag ==
-                                                                          Tagtype
-                                                                              .bestseller
-                                                                      ? CustomColors
-                                                                          .kgreen
-                                                                      : CustomColors
-                                                                          .knewblue,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.r),
-                                                        ),
-                                                        child: Center(
-                                                          child: Padding(
-                                                            padding: EdgeInsets
-                                                                .fromLTRB(
-                                                                    12.w,
-                                                                    2.h,
-                                                                    12.w,
-                                                                    2.h),
-                                                            child: Text(
-                                                              fc
-                                                                  .filterProducts[
-                                                                      index]
-                                                                  .productTag
-                                                                  .name
-                                                                  .toString(),
-                                                              style: CustomTextStyles
-                                                                  .kBold12
-                                                                  .copyWith(
-                                                                      color: CustomColors
-                                                                          .kWhite),
-                                                            ),
-                                                          ),
+                                                                      .kgreen
+                                                                  : CustomColors
+                                                                      .knewblue,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.r),
+                                                    ),
+                                                    child: Center(
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.fromLTRB(
+                                                                12.w,
+                                                                2.h,
+                                                                12.w,
+                                                                2.h),
+                                                        child: Text(
+                                                          filterList[index]
+                                                              .productTag
+                                                              .name
+                                                              .toString(),
+                                                          style: CustomTextStyles
+                                                              .kBold12
+                                                              .copyWith(
+                                                                  color: CustomColors
+                                                                      .kWhite),
                                                         ),
                                                       ),
-                                                      const Spacer(),
-                                                      FavouriteButton(
-                                                        onPressed: () {},
-                                                        isFavourite:
-                                                            CustomColors
-                                                                .kDivider,
-                                                      ),
-                                                    ]),
-                                                SizedBox(height: 11.h),
+                                                    ),
+                                                  ),
+                                                  const Spacer(),
+                                                  FavouriteButton(
+                                                    onPressed: () {},
+                                                    isFavourite:
+                                                        CustomColors.kDivider,
+                                                  ),
+                                                ]),
+                                            SizedBox(height: 11.h),
+                                            Text(
+                                              filterList[index].productName,
+                                              style: CustomTextStyles.kBold12
+                                                  .copyWith(
+                                                      color: CustomColors
+                                                          .kprimarylight),
+                                            ),
+                                            SizedBox(height: 4.h),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
                                                 Text(
-                                                  fc.filterProducts[index]
-                                                      .productName,
+                                                  '\$${filterList[index].productPrice}',
                                                   style: CustomTextStyles
-                                                      .kBold12
+                                                      .kBold14
                                                       .copyWith(
                                                           color: CustomColors
-                                                              .kprimarylight),
+                                                              .kbrandblue),
                                                 ),
-                                                SizedBox(height: 4.h),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      '\$${fc.filterProducts[index].productPrice}',
-                                                      style: CustomTextStyles
-                                                          .kBold14
-                                                          .copyWith(
-                                                              color: CustomColors
-                                                                  .kbrandblue),
-                                                    ),
-                                                    SizedBox(width: 8.w),
-                                                    Text(
-                                                      '\$${fc.filterProducts[index].oldPrice}',
-                                                      style: CustomTextStyles
-                                                          .kMedium14
-                                                          .copyWith(
-                                                        color:
-                                                            CustomColors.kGrey,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .lineThrough,
-                                                      ),
-                                                    ),
-                                                  ],
+                                                SizedBox(width: 8.w),
+                                                Text(
+                                                  '\$${filterList[index].oldPrice}',
+                                                  style: CustomTextStyles
+                                                      .kMedium14
+                                                      .copyWith(
+                                                    color: CustomColors.kGrey,
+                                                    decoration: TextDecoration
+                                                        .lineThrough,
+                                                  ),
                                                 ),
-                                              ]),
-                                        ),
-                                      ])),
-                            );
-                          },
-                        ),
-                      );
-              })
+                                              ],
+                                            ),
+                                          ]),
+                                    ),
+                                  ])),
+                        );
+                      },
+                    ),
+                  );
+                })
             : Expanded(
                 child: _searching == true
                     ? Center(

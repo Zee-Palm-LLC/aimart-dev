@@ -7,7 +7,10 @@ import '../models/product_model.dart';
 
 class FilterController extends GetxController {
   DatabaseService db = DatabaseService();
-  List<Product> filterProducts = [];
+  Rx<ProductCategory> _selectedCategory = ProductCategory.all.obs;
+  ProductCategory get selectedCategory => _selectedCategory.value;
+  Rx<ProductCategory> _selectedCategory = ProductCategory.all.obs;
+  ProductCategory get selectedCategory => _selectedCategory.value;
 
   Future<List<Product>?> getFilterProducts(
       {required ProductCategory category,
@@ -16,7 +19,7 @@ class FilterController extends GetxController {
       required String sizes}) async {
     try {
       var docs = await db.productsCollection
-          .where('productCategory', isEqualTo: category.index)
+          .where('productCategory', isEqualTo: _selectedCategory)
           .where('colors', arrayContains: color)
           .where('productPrice', isEqualTo: price)
           // .where('sizes', arrayContains: sizes)
