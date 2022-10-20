@@ -15,7 +15,7 @@ ThemeData mainTheme = ThemeData(
         selectionColor: CustomColors.kPrimary),
     buttonTheme: ButtonThemeData(buttonColor: CustomColors.kPrimary),
     appBarTheme: AppBarTheme(
-      iconTheme: IconThemeData(color: CustomColors.kDarkBblue),
+      iconTheme: IconThemeData(color: CustomColors.kDarkBlue),
       color: CustomColors.kBackground,
     ));
 
