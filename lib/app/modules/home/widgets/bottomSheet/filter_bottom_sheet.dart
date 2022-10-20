@@ -1,9 +1,9 @@
 import 'package:aimart_dev/app/modules/home/widgets/buttons/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../../data/constants/constants.dart';
-import '../../views/home/home_screen.dart';
 
 class CustomBottomSheet extends StatefulWidget {
   const CustomBottomSheet({Key? key}) : super(key: key);
@@ -17,8 +17,8 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
   int defaultChoiceIndex = 0;
   int defaultSizeIndex = 0;
   int defaultCategoryIndex = 0;
-  List<String> _size = ['XXL', 'XL', 'L', 'M', 'S'];
-  List<String> list = ['Woman', 'Men', 'Kids'];
+  RxList<String> _selectedCategory = ['Men', 'Women', 'Kids'].obs;
+  List<String> get selectedCategory => _selectedCategory.value;
   int selectIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                   padding: EdgeInsets.only(left: 20.w),
                   child: Wrap(
                     spacing: 16,
-                    children: List.generate(list.length, (index) {
+                    children: List.generate(_selectedCategory.length, (index) {
                       return InkWell(
                           onTap: () {
                             setState(() {
@@ -84,7 +84,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                                         ? CustomColors.kbrandblue
                                         : CustomColors.kGrey)),
                             child: Text(
-                              list[index],
+                              _selectedCategory[index],
                               style: CustomTextStyles.kBold14.copyWith(
                                   color: defaultChoiceIndex == index
                                       ? CustomColors.kWhite
@@ -111,7 +111,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                       return InkWell(
                           onTap: () {
                             setState(() {
-                              defaultSizeIndex == index;
+                              defaultSizeIndex = index;
                             });
                           },
                           child: Container(
@@ -220,7 +220,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                           children: [
                             CircleAvatar(
                               radius: 6.r,
-                              backgroundColor: colorsList[index],
+                              backgroundColor: Color(int.parse(color[index])),
                             ),
                             SizedBox(width: 8.w),
                             Text(
@@ -274,12 +274,13 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
     );
   }
 
-  List<Color> colorsList = [
-    Colors.red,
-    Colors.blue,
-    Colors.black,
-    Colors.yellow,
-    Colors.green
+  List<String> colorNames = ['White', 'Red', 'Green', 'Black', 'Blue'];
+  List<String> _size = ['XXL', 'XL', 'L', 'M', 'S'];
+  List<String> color = [
+    '0xFFFFFFFF',
+    '0xFFFF0000',
+    '0xFF00FF00',
+    '0xFF000000',
+    '0xFF0000FF',
   ];
-  List<String> colorNames = ['Red', 'Blue', 'Black', 'Yellow', 'Green'];
 }

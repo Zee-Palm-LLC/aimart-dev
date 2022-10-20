@@ -30,13 +30,13 @@ class _HomePageState extends State<HomePage> {
   UserController uc = Get.find<UserController>();
   ProductController pc = Get.find<ProductController>();
   int selectedIndex = 0;
+
+  Rx<ProductCategory> _selectedCategory = ProductCategory.all.obs;
+  ProductCategory get selectedCategory => _selectedCategory.value;
   int currentPos = 0;
-  List<String> categories = ['All', 'Women', 'Men', 'Kids'];
-  ProductCategory productCategory = ProductCategory.all;
   List<Product>? productCategoryList = [];
   @override
   Widget build(BuildContext context) {
-    UserModel user = uc.user;
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                     child: PrimaryButton(
                       child: SvgPicture.asset(CustomAssets.kfiltericon),
                       onPressed: () {
-                        // Get.to(() => SearchScreen());
+                        Get.to(() => SearchScreen());
                       },
                     ),
                   )
@@ -266,6 +266,7 @@ class _HomePageState extends State<HomePage> {
                         child: Text("No Products",
                             style: CustomTextStyles.kBold20))
                     : Column(
+                        // show me filter scre
                         children: [
                           SizedBox(
                             height: 42.h,
@@ -274,59 +275,31 @@ class _HomePageState extends State<HomePage> {
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
                                   return CustomChips(
-                                    textColor: selectedIndex == index
+                                    textColor: selectedCategory ==
+                                            ProductCategory.values[index]
                                         ? CustomColors.kWhite
                                         : CustomColors.kGrey,
-                                    color: selectedIndex == index
+                                    color: selectedCategory ==
+                                            ProductCategory.values[index]
                                         ? CustomColors.kPrimary
                                         : CustomColors.kBackground,
-                                    borderColor: selectedIndex == index
+                                    borderColor: selectedCategory ==
+                                            ProductCategory.values[index]
                                         ? CustomColors.kPrimary
                                         : CustomColors.kGrey.withOpacity(0.3),
                                     onPress: () {
-                                      setState(() {
-                                        if (index == 0) {
-                                          productCategory = ProductCategory.all;
-                                        }
-                                        if (index == 1) {
-                                          productCategory =
-                                              ProductCategory.women;
-                                          productCategoryList = pc
-                                              .allproductList!
-                                              .where((element) =>
-                                                  element.productCategory ==
-                                                  ProductCategory.women)
-                                              .toList();
-                                        }
-                                        if (index == 2) {
-                                          productCategory = ProductCategory.men;
-                                          productCategoryList = pc
-                                              .allproductList!
-                                              .where((element) =>
-                                                  element.productCategory ==
-                                                  ProductCategory.men)
-                                              .toList();
-                                        }
-                                        if (index == 3) {
-                                          productCategory =
-                                              ProductCategory.kids;
-                                          productCategoryList = pc
-                                              .allproductList!
-                                              .where((element) =>
-                                                  element.productCategory ==
-                                                  ProductCategory.kids)
-                                              .toList();
-                                        }
-                                        selectedIndex = index;
-                                      });
+                                      _selectedCategory.value =
+                                          ProductCategory.values[index];
                                     },
-                                    title: categories[index],
+                                    title: ProductCategory
+                                        .values[index].name.capitalizeFirst
+                                        .toString(),
                                   );
                                 },
                                 separatorBuilder: (context, index) {
                                   return SizedBox(width: 12.w);
                                 },
-                                itemCount: categories.length),
+                                itemCount: ProductCategory.values.length),
                           ),
                           SizedBox(height: 30.h),
                           Row(
@@ -345,49 +318,48 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                           SizedBox(height: 24.h),
-                          ListView.separated(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: productCategory == ProductCategory.all
-                                ? pc.allproductList?.length ?? 0
-                                : productCategoryList?.length ?? 0,
-                            itemBuilder: (BuildContext context, int index) {
-                              return HomePageCard(
-                                onPressed: () {
-                                  Get.to(() => DetailProductScreen(
-                                      product:
-                                          productCategory == ProductCategory.all
-                                              ? pc.allproductList![index]
-                                              : productCategoryList![index]));
-                                },
-                                favoriteCallback: () async {
-                                  pc.savedProductsIds!.contains(
-                                          pc.allproductList![index].productId)
-                                      ? await pc.deletefromFavourite(
-                                          product: productCategory ==
-                                                  ProductCategory.all
-                                              ? pc.allproductList![index]
-                                              : productCategoryList![index])
-                                      : await pc.addToFavourite(
-                                          product: productCategory ==
-                                                  ProductCategory.all
-                                              ? pc.allproductList![index]
-                                              : productCategoryList![index]);
-                                },
-                                isLike: pc.savedProductsIds!.contains(
-                                        pc.allproductList![index].productId)
-                                    ? CustomColors.kError
-                                    : CustomColors.kDivider,
-                                product: productCategory == ProductCategory.all
-                                    ? pc.allproductList![index]
-                                    : productCategoryList![index],
-                              );
-                            },
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return SizedBox(height: 20.h);
-                            },
-                          )
+                          FutureBuilder<List<Product>?>(
+                              future: pc.getFilteredProducts(
+                                  category: selectedCategory),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                                List<Product>? categoriesList = snapshot.data!;
+                                return ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: categoriesList.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return HomePageCard(
+                                      onPressed: () {
+                                        Get.to(() => DetailProductScreen(
+                                            product: categoriesList[index]));
+                                      },
+                                      favoriteCallback: () async {
+                                        pc.savedProductsIds!.contains(
+                                                categoriesList[index].productId)
+                                            ? await pc.deleteFromFavorite(
+                                                product: categoriesList[index])
+                                            : await pc.addToFavorite(
+                                                product: categoriesList[index]);
+                                      },
+                                      isLike: pc.savedProductsIds!.contains(
+                                              categoriesList[index].productId)
+                                          ? CustomColors.kError
+                                          : CustomColors.kDivider,
+                                      product: categoriesList[index],
+                                    );
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return SizedBox(height: 20.h);
+                                  },
+                                );
+                              })
                         ],
                       );
               }),

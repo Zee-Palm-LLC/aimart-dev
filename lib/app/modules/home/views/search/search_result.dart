@@ -1,10 +1,4 @@
-// import 'package:aimart_dev/app/modules/home/views/home/home_screen.dart';
-// import 'package:aimart_dev/app/modules/home/widgets/bottomSheet/bottom_sheet.dart';
 
-// import 'package:aimart_dev/app/modules/home/widgets/home/item_in_grid_sale.dart';
-// import 'package:aimart_dev/app/modules/home/widgets/home/item_in_list_sale.dart';
-// import 'package:aimart_dev/app/modules/home/widgets/home/list_grid_button.dart';
-// import 'package:aimart_dev/app/modules/home/widgets/home/search_text_feild.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,8 +9,6 @@
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:get/get.dart';
 
-// import '../../models/colormodel.dart';
-// import '../../models/product_model.dart';
 
 // class SearchResultScreen extends StatefulWidget {
 //   const SearchResultScreen({super.key});

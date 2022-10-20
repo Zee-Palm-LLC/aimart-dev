@@ -54,7 +54,7 @@ class _WishListScreenState extends State<WishListScreen> {
                         return WishListCard(
                             product: pc.savedProducts[index],
                             onPressed: () async {
-                              await pc.deletefromFavourite(
+                              await pc.deleteFromFavorite(
                                   product: pc.savedProducts[index]);
                             },
                             isFavourite: CustomColors.kError);

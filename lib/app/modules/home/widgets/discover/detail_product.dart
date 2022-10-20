@@ -1,9 +1,11 @@
 import 'package:aimart_dev/app/data/constants/color.dart';
+import 'package:aimart_dev/app/modules/home/controllers/product_controller.dart';
 import 'package:aimart_dev/app/modules/home/models/product_model.dart';
 import 'package:aimart_dev/app/modules/home/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class CustomDetailProduct extends StatefulWidget {
@@ -23,6 +25,7 @@ class CustomDetailProduct extends StatefulWidget {
 
 class _CustomDetailProductState extends State<CustomDetailProduct> {
   int selectIndex = 0;
+  ProductController pc = Get.find<ProductController>();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,7 +43,16 @@ class _CustomDetailProductState extends State<CustomDetailProduct> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               FavouriteButton(
-                  onPressed: () {}, isFavourite: CustomColors.kError)
+                  onPressed: () async {
+                    pc.savedProductsIds!.contains(widget.product.productId)
+                        ? await pc.deleteFromFavorite(product: widget.product)
+                        : await pc.addToFavorite(product: widget.product);
+                    setState(() {});
+                  },
+                  isFavourite:
+                      pc.savedProductsIds!.contains(widget.product.productId)
+                          ? CustomColors.kError
+                          : CustomColors.kDivider)
             ],
           ),
           // Row(

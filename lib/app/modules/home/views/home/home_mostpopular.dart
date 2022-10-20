@@ -22,10 +22,10 @@ class _HomeMostPopularState extends State<HomeMostPopular> {
   bool isView = false;
   int selectedIndex = 0;
   ProductController pc = Get.find<ProductController>();
-  ProductCategory productCategory = ProductCategory.all;
-  List<Product>? productCategoryList = [];
-  List<String> categories = ['All', 'Women', 'Men', 'Kids'];
   int selectIndex = 0;
+
+  Rx<ProductCategory> _selectedCategory = ProductCategory.all.obs;
+  ProductCategory get selectedCategory => _selectedCategory.value;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,54 +58,31 @@ class _HomeMostPopularState extends State<HomeMostPopular> {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return CustomChips(
-                              textColor: selectedIndex == index
+                              textColor: selectedCategory ==
+                                      ProductCategory.values[index]
                                   ? CustomColors.kWhite
                                   : CustomColors.kGrey,
-                              color: selectedIndex == index
+                              color: selectedCategory ==
+                                      ProductCategory.values[index]
                                   ? CustomColors.kPrimary
                                   : CustomColors.kBackground,
-                              borderColor: selectedIndex == index
+                              borderColor: selectedCategory ==
+                                      ProductCategory.values[index]
                                   ? CustomColors.kPrimary
                                   : CustomColors.kGrey.withOpacity(0.3),
                               onPress: () {
-                                setState(() {
-                                  if (index == 0) {
-                                    productCategory = ProductCategory.all;
-                                  }
-                                  if (index == 1) {
-                                    productCategory = ProductCategory.women;
-                                    productCategoryList = pc.allproductList!
-                                        .where((element) =>
-                                            element.productCategory ==
-                                            ProductCategory.women)
-                                        .toList();
-                                  }
-                                  if (index == 2) {
-                                    productCategory = ProductCategory.men;
-                                    productCategoryList = pc.allproductList!
-                                        .where((element) =>
-                                            element.productCategory ==
-                                            ProductCategory.men)
-                                        .toList();
-                                  }
-                                  if (index == 3) {
-                                    productCategory = ProductCategory.kids;
-                                    productCategoryList = pc.allproductList!
-                                        .where((element) =>
-                                            element.productCategory ==
-                                            ProductCategory.kids)
-                                        .toList();
-                                  }
-                                  selectedIndex = index;
-                                });
+                                _selectedCategory.value =
+                                    ProductCategory.values[index];
                               },
-                              title: categories[index],
+                              title: ProductCategory
+                                  .values[index].name.capitalizeFirst
+                                  .toString(),
                             );
                           },
                           separatorBuilder: (context, index) {
                             return SizedBox(width: 12.w);
                           },
-                          itemCount: categories.length),
+                          itemCount: ProductCategory.values.length),
                     ),
                     SizedBox(height: 30.h),
                     Padding(
@@ -135,102 +112,97 @@ class _HomeMostPopularState extends State<HomeMostPopular> {
                       ),
                     ),
                     SizedBox(height: 24.h),
-                    isView
-                        ? Expanded(
-                            child: ListView.separated(
-                              padding: EdgeInsets.symmetric(horizontal: 28.h),
-                              separatorBuilder:
-                                  (BuildContext context, int index) {
-                                return SizedBox(
-                                  height: 20.h,
-                                );
-                              },
-                              itemCount: productCategory == ProductCategory.all
-                                  ? pc.allproductList?.length ?? 0
-                                  : productCategoryList?.length ?? 0,
-                              itemBuilder: (BuildContext context, int index) {
-                                return ProductSaleCard(
-                                  onTap: () {
-                                    Get.to(() => DetailProductScreen(
-                                        product: productCategory ==
-                                                ProductCategory.all
-                                            ? pc.allproductList![index]
-                                            : productCategoryList![index]));
-                                  },
-                                  favoriteCallBack: () async {
-                                    pc.savedProductsIds!.contains(
-                                            pc.allproductList![index].productId)
-                                        ? await pc.deletefromFavourite(
-                                            product: productCategory ==
-                                                    ProductCategory.all
-                                                ? pc.allproductList![index]
-                                                : productCategoryList![index])
-                                        : await pc.addToFavourite(
-                                            product: productCategory ==
-                                                    ProductCategory.all
-                                                ? pc.allproductList![index]
-                                                : productCategoryList![index]);
-                                  },
-                                  isFavourite: pc.savedProductsIds!.contains(
-                                          pc.allproductList![index].productId)
-                                      ? CustomColors.kError
-                                      : CustomColors.kDivider,
-                                  product:
-                                      productCategory == ProductCategory.all
-                                          ? pc.allproductList![index]
-                                          : productCategoryList![index],
-                                );
-                              },
-                            ),
-                          )
-                        : Expanded(
-                            child: GridView.builder(
-                                padding: EdgeInsets.symmetric(horizontal: 28.w),
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        childAspectRatio: 156.w / 200.h,
-                                        crossAxisSpacing: 25.h,
-                                        mainAxisSpacing: 14.h),
-                                itemCount:
-                                    productCategory == ProductCategory.all
-                                        ? pc.allproductList?.length ?? 0
-                                        : productCategoryList?.length ?? 0,
-                                itemBuilder: (BuildContext ctx, index) {
-                                  return SaleCardGrid(
-                                    onTap: () {
-                                      Get.to(() => DetailProductScreen(
-                                          product: productCategory ==
-                                                  ProductCategory.all
-                                              ? pc.allproductList![index]
-                                              : productCategoryList![index]));
+                    FutureBuilder<List<Product>?>(
+                        future:
+                            pc.getFilteredProducts(category: selectedCategory),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          List<Product>? categoriesList = snapshot.data!;
+                          return isView
+                              ? Expanded(
+                                  child: ListView.separated(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 28.h),
+                                    separatorBuilder:
+                                        (BuildContext context, int index) {
+                                      return SizedBox(
+                                        height: 20.h,
+                                      );
                                     },
-                                    fovoriteCallBack: () async {
-                                      pc.savedProductsIds!.contains(pc
-                                              .allproductList![index].productId)
-                                          ? await pc.deletefromFavourite(
-                                              product: productCategory ==
-                                                      ProductCategory.all
-                                                  ? pc.allproductList![index]
-                                                  : productCategoryList![index])
-                                          : await pc.addToFavourite(
-                                              product: productCategory ==
-                                                      ProductCategory.all
-                                                  ? pc.allproductList![index]
-                                                  : productCategoryList![
-                                                      index]);
+                                    itemCount: categoriesList.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return ProductSaleCard(
+                                        onTap: () {
+                                          Get.to(() => DetailProductScreen(
+                                              product: categoriesList[index]));
+                                        },
+                                        favoriteCallBack: () async {
+                                          pc.savedProductsIds!.contains(
+                                                  categoriesList[index]
+                                                      .productId)
+                                              ? await pc.deleteFromFavorite(
+                                                  product:
+                                                      categoriesList[index])
+                                              : await pc.addToFavorite(
+                                                  product:
+                                                      categoriesList[index]);
+                                        },
+                                        isFavourite: pc.savedProductsIds!
+                                                .contains(categoriesList[index]
+                                                    .productId)
+                                            ? CustomColors.kError
+                                            : CustomColors.kDivider,
+                                        product: categoriesList[index],
+                                      );
                                     },
-                                    isFavourite: pc.savedProductsIds!.contains(
-                                            pc.allproductList![index].productId)
-                                        ? CustomColors.kError
-                                        : CustomColors.kDivider,
-                                    product:
-                                        productCategory == ProductCategory.all
-                                            ? pc.allproductList![index]
-                                            : productCategoryList![index],
-                                  );
-                                }),
-                          )
+                                  ),
+                                )
+                              : Expanded(
+                                  child: GridView.builder(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 28.w),
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              childAspectRatio: 156.w / 200.h,
+                                              crossAxisSpacing: 25.h,
+                                              mainAxisSpacing: 14.h),
+                                      itemCount: categoriesList.length,
+                                      itemBuilder: (BuildContext ctx, index) {
+                                        return SaleCardGrid(
+                                          onTap: () {
+                                            Get.to(() => DetailProductScreen(
+                                                product:
+                                                    categoriesList[index]));
+                                          },
+                                          fovoriteCallBack: () async {
+                                            pc.savedProductsIds!.contains(
+                                                    categoriesList[index]
+                                                        .productId)
+                                                ? await pc.deleteFromFavorite(
+                                                    product:
+                                                        categoriesList[index])
+                                                : await pc.addToFavorite(
+                                                    product:
+                                                        categoriesList[index]);
+                                            setState(() {});
+                                          },
+                                          isFavourite: pc.savedProductsIds!
+                                                  .contains(
+                                                      categoriesList[index]
+                                                          .productId)
+                                              ? CustomColors.kError
+                                              : CustomColors.kDivider,
+                                          product: categoriesList[index],
+                                        );
+                                      }),
+                                );
+                        })
                   ],
                 );
         }));

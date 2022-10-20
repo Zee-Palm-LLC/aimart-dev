@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'dart:async';
 import '../../../services/database_services.dart';
-import '../../../services/firebase_storage.dart';
 import '../models/user_model.dart';
 import '../widgets/widgets.dart';
 import 'auth_controller.dart';

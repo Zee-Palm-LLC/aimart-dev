@@ -82,9 +82,7 @@ class _HomeFlashSaleState extends State<HomeFlashSale> {
                         child: ListView.separated(
                           padding: EdgeInsets.symmetric(horizontal: 28.h),
                           separatorBuilder: (BuildContext context, int index) {
-                            return SizedBox(
-                              height: 20.h,
-                            );
+                            return SizedBox(height: 20.h);
                           },
                           itemCount: saleItems?.length ?? 0,
                           itemBuilder: (BuildContext context, int index) {
@@ -95,15 +93,16 @@ class _HomeFlashSaleState extends State<HomeFlashSale> {
                               },
                               product: saleItems![index],
                               favoriteCallBack: () async {
-                                pc.savedProductsIds!.contains(
-                                        pc.allproductList![index].productId)
-                                    ? await pc.deletefromFavourite(
+                                pc.savedProductsIds!
+                                        .contains(saleItems[index].productId)
+                                    ? await pc.deleteFromFavorite(
                                         product: saleItems[index])
-                                    : await pc.addToFavourite(
+                                    : await pc.addToFavorite(
                                         product: saleItems[index]);
+                                setState(() {});
                               },
-                              isFavourite: pc.savedProductsIds!.contains(
-                                      pc.allproductList![index].productId)
+                              isFavourite: pc.savedProductsIds!
+                                      .contains(saleItems[index].productId)
                                   ? CustomColors.kError
                                   : CustomColors.kDivider,
                             );
@@ -130,10 +129,11 @@ class _HomeFlashSaleState extends State<HomeFlashSale> {
                                 fovoriteCallBack: () async {
                                   pc.savedProductsIds!
                                           .contains(saleItems[index].productId)
-                                      ? await pc.deletefromFavourite(
+                                      ? await pc.deleteFromFavorite(
                                           product: saleItems[index])
-                                      : await pc.addToFavourite(
+                                      : await pc.addToFavorite(
                                           product: saleItems[index]);
+                                  setState(() {});
                                 },
                                 isFavourite: pc.savedProductsIds!
                                         .contains(saleItems[index].productId)

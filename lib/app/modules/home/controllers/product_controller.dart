@@ -1,3 +1,4 @@
+import 'package:aimart_dev/app/data/helper/product_category.dart';
 import 'package:aimart_dev/app/services/database_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -24,6 +25,27 @@ class ProductController extends GetxController {
     });
   }
 
+//ab krlo gy ? sai h lkn aqib bahi all ma sari categories dalni h databse ma ll, theek hy >smjhy?g t
+  Future<List<Product>?> getFilteredProducts(
+      {required ProductCategory category}) async {
+    //kya update hota database me? integer?g
+    try {
+      List<Product> products = [];
+      var docs = category == ProductCategory.all
+          ? await db.productsCollection.get()
+          : await db.productsCollection
+              .where('productCategory', isEqualTo: category.index)
+              .get();
+      for (var element in docs.docs) {
+        products.add(Product.fromMap(element.data() as Map<String, dynamic>));
+      }
+      return products;
+    } on Exception catch (err) {
+      print(err);
+      return [];
+    }
+  }
+
   Stream<List<Product>> getDiscountedItems() {
     return db.productsCollection
         .where('productTag', isEqualTo: 2)
@@ -45,7 +67,7 @@ class ProductController extends GetxController {
     });
   }
 
-  Future<void> addToFavourite({required Product product}) async {
+  Future<void> addToFavorite({required Product product}) async {
     try {
       await db.usersCollection
           .doc(user.currentUser!.uid)
@@ -58,7 +80,7 @@ class ProductController extends GetxController {
     }
   }
 
-  Future<void> deletefromFavourite({required Product product}) async {
+  Future<void> deleteFromFavorite({required Product product}) async {
     try {
       await db.usersCollection
           .doc(user.currentUser!.uid)
