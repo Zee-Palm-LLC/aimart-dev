@@ -1,54 +1,91 @@
-enum NotificationEnum {
-  payment,
-  reciept,
-  update,
-  discout,
-}
+import 'dart:convert';
+
+import 'user_model.dart';
 
 class NotificationModel {
-  final String title;
-  final String detail;
-  final bool isNotSeen;
-  final String date;
-  final NotificationEnum notificationtype;
-  NotificationModel({
-    required this.title,
-    required this.detail,
-    required this.isNotSeen,
-    required this.date,
-    required this.notificationtype,
-  });
+  String notificationFrom;
+  DateTime notificationDateTime;
+  String notificationMessage;
+  String notificationId;
+  NotificationType notificationType;
+  NotificationModel(
+      {required this.notificationFrom,
+      required this.notificationDateTime,
+      required this.notificationMessage,
+      required this.notificationId,
+      required this.notificationType});
+
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
+
+    result.addAll({'notificationFrom': notificationFrom});
+    result.addAll(
+        {'notificationDateTime': notificationDateTime.millisecondsSinceEpoch});
+    result.addAll({'notificationMessage': notificationMessage});
+    result.addAll({'notificationId': notificationId});
+    result.addAll({'notificationType': notificationType.toMap()});
+    return result;
+  }
+
+  factory NotificationModel.fromMap(Map<String, dynamic> map) {
+    return NotificationModel(
+      notificationFrom: map['notificationFrom'] ?? '',
+      notificationDateTime:
+          DateTime.fromMillisecondsSinceEpoch(map['notificationDateTime']),
+      notificationMessage: map['notificationMessage'] ?? '',
+      notificationId: map['notificationId'] ?? '',
+      notificationType: NotificationType.fromMap(map['notificationType']),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory NotificationModel.fromJson(String source) =>
+      NotificationModel.fromMap(json.decode(source));
 }
 
-List<NotificationModel> notificationList = [payment, released, update, nikayu];
+class NotificationType {
+  String notificationType;
+  String typeId;
+  NotificationType({
+    required this.notificationType,
+    required this.typeId,
+  });
 
-NotificationModel payment = NotificationModel(
-  title: 'Payment Success',
-  detail:
-      'You success an order payment from Star Store in the amount of \$89.99',
-  isNotSeen: true,
-  date: 'Today',
-  notificationtype: NotificationEnum.payment,
-);
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
 
-NotificationModel released = NotificationModel(
-  title: 'Released Receipt',
-  detail: 'Congratuliation! Your receipt has been released.',
-  isNotSeen: true,
-  date: 'Yesterday',
-  notificationtype: NotificationEnum.reciept,
-);
-NotificationModel update = NotificationModel(
-  title: 'Update App',
-  detail: 'Your application has made updates to improve services',
-  isNotSeen: false,
-  date: '12/8',
-  notificationtype: NotificationEnum.update,
-);
-NotificationModel nikayu = NotificationModel(
-  title: 'Nikayu_Official',
-  detail: 'congratulations !! You get a discount of up to 30% for all items.',
-  isNotSeen: false,
-  date: '10/8',
-  notificationtype: NotificationEnum.discout,
-);
+    result.addAll({'notificationType': notificationType});
+    result.addAll({'typeId': typeId});
+
+    return result;
+  }
+
+  factory NotificationType.fromMap(Map<String, dynamic> map) {
+    return NotificationType(
+      notificationType: map['notificationType'] ?? '',
+      typeId: map['typeId'] ?? '',
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory NotificationType.fromJson(String source) =>
+      NotificationType.fromMap(json.decode(source));
+}
+
+class NotificationTypes {
+  static String release = 'New Product';
+  static String payment = 'Payment Success';
+  static String update = 'Update App';
+  List<String> get allNotificationTypes => [release, payment, update];
+}
+
+class NotificationDetailsModel {
+  NotificationModel notification;
+  UserModel user;
+  NotificationDetailsModel({
+    required this.notification,
+    required this.user,
+  });
+}

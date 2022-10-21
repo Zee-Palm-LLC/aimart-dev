@@ -1,4 +1,5 @@
 import 'package:aimart_dev/app/data/helper/paymentstrip.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:aimart_dev/app/modules/home/bindings/home_binding.dart';
 import 'package:aimart_dev/app/modules/home/views/splash/splash_screen.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'app/data/constants/constants.dart';
 import 'app/data/constants/theme.dart';
 
 int? initScreen;

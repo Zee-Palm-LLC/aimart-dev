@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'dart:async';
+import '../../../data/helper/notification_enum.dart';
 import '../../../services/database_services.dart';
 import '../models/user_model.dart';
 import '../widgets/widgets.dart';
@@ -64,6 +65,17 @@ class UserController extends GetxController {
     } on Exception catch (e) {
       hideLoadingDialog();
       Get.snackbar('Error', e.toString());
+    }
+  }
+
+  Future<void> updateHaveNotifications(
+      {required HaveNotifications haveNotifications}) async {
+    try {
+      db.usersCollection.doc(currentUid).update({
+        'haveNotifications': haveNotifications.index,
+      });
+    } on Exception catch (err) {
+      print(err.toString());
     }
   }
 

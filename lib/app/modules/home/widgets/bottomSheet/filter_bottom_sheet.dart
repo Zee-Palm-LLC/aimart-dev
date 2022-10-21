@@ -4,21 +4,29 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../data/constants/constants.dart';
+import '../../../../data/helper/product_category.dart';
+import '../widgets.dart';
 
 class CustomBottomSheet extends StatefulWidget {
-  const CustomBottomSheet({Key? key}) : super(key: key);
+  Function(
+    ProductCategory productCategory,
+    int selectedSize,
+    double price,
+    int selectedColor,
+  ) onTap;
+  CustomBottomSheet({Key? key, required this.onTap}) : super(key: key);
 
   @override
   State<CustomBottomSheet> createState() => _CustomBottomSheetState();
 }
 
 class _CustomBottomSheetState extends State<CustomBottomSheet> {
-  double _value = 0;
+  double value = 0;
   int defaultChoiceIndex = 0;
   int defaultSizeIndex = 0;
   int defaultCategoryIndex = 0;
-  RxList<String> _selectedCategory = ['Men', 'Women', 'Kids'].obs;
-  List<String> get selectedCategory => _selectedCategory.value;
+  Rx<ProductCategory> _selectedCategory = ProductCategory.all.obs;
+  ProductCategory get selectedCategory => _selectedCategory.value;
   int selectIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -60,39 +68,41 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
               ),
               SizedBox(height: 12.h),
               Padding(
-                  padding: EdgeInsets.only(left: 20.w),
-                  child: Wrap(
-                    spacing: 16,
-                    children: List.generate(_selectedCategory.length, (index) {
-                      return InkWell(
-                          onTap: () {
-                            setState(() {
-                              defaultChoiceIndex == index;
-                            });
+                padding: EdgeInsets.only(left: 20.w),
+                child: SizedBox(
+                  height: 42.h,
+                  child: ListView.separated(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return CustomChips(
+                          textColor:
+                              selectedCategory == ProductCategory.values[index]
+                                  ? CustomColors.kWhite
+                                  : CustomColors.kGrey,
+                          color:
+                              selectedCategory == ProductCategory.values[index]
+                                  ? CustomColors.kPrimary
+                                  : CustomColors.kBackground,
+                          borderColor:
+                              selectedCategory == ProductCategory.values[index]
+                                  ? CustomColors.kPrimary
+                                  : CustomColors.kGrey.withOpacity(0.3),
+                          onPress: () {
+                            _selectedCategory.value =
+                                ProductCategory.values[index];
                           },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 23.w, vertical: 10.h),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                color: defaultChoiceIndex == index
-                                    ? CustomColors.kbrandblue
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                    color: defaultChoiceIndex == index
-                                        ? CustomColors.kbrandblue
-                                        : CustomColors.kGrey)),
-                            child: Text(
-                              _selectedCategory[index],
-                              style: CustomTextStyles.kBold14.copyWith(
-                                  color: defaultChoiceIndex == index
-                                      ? CustomColors.kWhite
-                                      : CustomColors.kGrey),
-                            ),
-                          ));
-                    }),
-                  )),
+                          title: ProductCategory
+                              .values[index].name.capitalizeFirst
+                              .toString(),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return SizedBox(width: 12.w);
+                      },
+                      itemCount: ProductCategory.values.length),
+                ),
+              ),
               SizedBox(height: 12.h),
               Padding(
                 padding: EdgeInsets.only(left: 20.w),
@@ -107,7 +117,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                   padding: EdgeInsets.only(left: 20.w),
                   child: Wrap(
                     spacing: 16,
-                    children: List.generate(_size.length, (index) {
+                    children: List.generate(size.length, (index) {
                       return InkWell(
                           onTap: () {
                             setState(() {
@@ -131,7 +141,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                                         : CustomColors.kGrey)),
                             child: Center(
                               child: Text(
-                                _size[index],
+                                size[index],
                                 style: CustomTextStyles.kBold12.copyWith(
                                     color: defaultSizeIndex == index
                                         ? CustomColors.kWhite
@@ -171,19 +181,22 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Slider(
-                  activeColor: CustomColors.kbrandblue,
-                  inactiveColor: CustomColors.kGrey,
-                  thumbColor: CustomColors.kbrandblue,
-                  min: 0,
-                  max: 200,
-                  value: _value,
-                  onChanged: (value) {
-                    setState(() {
-                      _value = value;
-                    });
-                  },
-                ),
+                child: Builder(builder: (context) {
+                  return Slider(
+                    activeColor: CustomColors.kbrandblue,
+                    inactiveColor: CustomColors.kGrey,
+                    thumbColor: CustomColors.kbrandblue,
+                    min: 0,
+                    max: 200,
+                    value: value,
+                    onChanged: (value) {
+                      setState(() {
+                        value = value;
+                        print(value);
+                      });
+                    },
+                  );
+                }),
               ),
               SizedBox(height: 20.h),
               Padding(
@@ -266,21 +279,27 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                           color: CustomColors.kWhite)
                     ],
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    print('size is $defaultSizeIndex');
+                    print('price is $value');
+                    print('Color is $defaultCategoryIndex');
+                    widget.onTap(selectedCategory, defaultSizeIndex, value,
+                        defaultCategoryIndex);
+                  },
                 ),
               )
             ]),
       ),
     );
   }
-
-  List<String> colorNames = ['White', 'Red', 'Green', 'Black', 'Blue'];
-  List<String> _size = ['XXL', 'XL', 'L', 'M', 'S'];
-  List<String> color = [
-    '0xFFFFFFFF',
-    '0xFFFF0000',
-    '0xFF00FF00',
-    '0xFF000000',
-    '0xFF0000FF',
-  ];
 }
+
+List<String> colorNames = ['White', 'Red', 'Green', 'Black', 'Blue'];
+List<String> size = ['XXL', 'XL', 'L', 'M', 'S'];
+List<String> color = [
+  '0xFFFFFFFF',
+  '0xFFFF0000',
+  '0xFF00FF00',
+  '0xFF000000',
+  '0xFF0000FF',
+];

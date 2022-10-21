@@ -21,9 +21,11 @@ class _SearchScreenState extends State<SearchScreen> {
   FilterController fc = Get.find<FilterController>();
   int selectIndex = 0;
   bool isFilter = false;
-
   TextEditingController _searchController = TextEditingController();
-
+  ProductCategory selectedCategory = ProductCategory.all;
+  String filterColor = '';
+  String filterSize = '';
+  double filterPrice = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +63,21 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                       context: context,
                       builder: (context) {
-                        return CustomBottomSheet();
+                        return CustomBottomSheet(
+                          onTap: (ProductCategory category, int selectedSize,
+                              double price, int selectColor) {
+                            setState(() {
+                              selectedCategory = category;
+                              filterSize = size[selectedSize];
+                              filterColor = color[selectColor];
+                              filterPrice = price;
+                            });
+                            print(selectedCategory);
+                            print(filterSize);
+                            print(filterColor);
+                            print(filterPrice);
+                          },
+                        );
                       });
                   setState(() {
                     isFilter = true;
@@ -76,10 +92,10 @@ class _SearchScreenState extends State<SearchScreen> {
         isFilter
             ? FutureBuilder<List<Product>?>(
                 future: fc.getFilterProducts(
-                    category: ProductCategory.men,
-                    color: '0xFFFFFFFF', //show
-                    price: 79,
-                    sizes: 'L'),
+                    category: selectedCategory,
+                    color: filterColor, //show
+                    price: filterPrice.toInt(),
+                    sizes: filterSize),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());

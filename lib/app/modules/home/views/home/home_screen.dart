@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.only(right: 28.w),
               child: InkWell(
                 onTap: () {
-                  Get.to(() => NotificationScreen());
+                  // Get.to(() => NotificationScreen());
                 },
                 child: Stack(
                   alignment: Alignment.center,

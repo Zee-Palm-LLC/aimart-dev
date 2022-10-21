@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../modules/home/models/notification_model.dart';
 import '../modules/home/models/user_model.dart';
 
 class DatabaseService {
@@ -20,4 +21,16 @@ class DatabaseService {
 
   CollectionReference cartCollection =
       FirebaseFirestore.instance.collection('Carts');
+
+  CollectionReference<NotificationModel?> notificationsCollection(String uid) =>
+      usersCollection.doc(uid).collection("Notifications").withConverter(
+        fromFirestore: (snapshot, options) {
+          return snapshot.exists
+              ? NotificationModel.fromMap(snapshot.data()!)
+              : null;
+        },
+        toFirestore: (value, options) {
+          return value!.toMap();
+        },
+      );
 }

@@ -1,0 +1,1 @@
+enum HaveNotifications { have, notHave }

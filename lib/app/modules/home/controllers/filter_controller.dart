@@ -1,4 +1,3 @@
-import 'package:aimart_dev/app/modules/home/controllers/product_controller.dart';
 import 'package:get/get.dart';
 
 import '../../../data/helper/product_category.dart';
@@ -7,10 +6,10 @@ import '../models/product_model.dart';
 
 class FilterController extends GetxController {
   DatabaseService db = DatabaseService();
-  Rx<ProductCategory> _selectedCategory = ProductCategory.all.obs;
-  ProductCategory get selectedCategory => _selectedCategory.value;
-  Rx<ProductCategory> _selectedCategory = ProductCategory.all.obs;
-  ProductCategory get selectedCategory => _selectedCategory.value;
+   Rx<List<Product>?> filterProducts = Rx<List<Product>?>(null);
+  List<Product>? get allproductList => filterProducts.value;
+
+
 
   Future<List<Product>?> getFilterProducts(
       {required ProductCategory category,
@@ -18,19 +17,21 @@ class FilterController extends GetxController {
       required int price,
       required String sizes}) async {
     try {
+      List<Product>? products = [];
+
       var docs = await db.productsCollection
-          .where('productCategory', isEqualTo: _selectedCategory)
+          .where('productCategory', isEqualTo: category.index)
           .where('colors', arrayContains: color)
           .where('productPrice', isEqualTo: price)
           // .where('sizes', arrayContains: sizes)
           .get();
       for (var product in docs.docs) {
-        filterProducts
-            .add(Product.fromMap(product.data() as Map<String, dynamic>));
+        products.add(Product.fromMap(product.data() as Map<String, dynamic>));
       }
-      return filterProducts;
+      return products;
     } on Exception catch (err) {
       print(err);
     }
   }
+  
 }
