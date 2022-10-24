@@ -1,5 +1,6 @@
 import 'package:aimart_dev/app/modules/home/controllers/filter_controller.dart';
 import 'package:aimart_dev/app/modules/home/controllers/product_controller.dart';
+import 'package:aimart_dev/app/modules/home/views/discover/detail_product_screen.dart';
 import 'package:algolia/algolia.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,9 +43,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 isPasswordField: false,
                 validator: (value) {},
                 onChange: (value) {
-                  // setState(() {});
-                  // isFilter = false;
                   _search();
+                  setState(() {});
                 },
                 hintText: 'What are you looking for?',
                 keyboardType: TextInputType.text,
@@ -64,19 +64,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                         context: context,
                         builder: (context) {
-                          return CustomBottomSheet(
-
-                              // onTap: (ProductCategory category, int selectedSize,
-                              //     double price, int selectColor) {
-                              //   // setState(() {
-                              //   //   selectedCategory = category;
-                              //   //   filterSize = size[selectedSize];
-                              //   //   filterColor = color[selectColor];
-                              //   //   filterPrice = price;
-                              //   // });
-
-                              // },
-                              );
+                          return CustomBottomSheet();
                         });
                   },
                 ),
@@ -84,332 +72,32 @@ class _SearchScreenState extends State<SearchScreen> {
             ],
           ),
           SizedBox(height: 20.h),
-          fc.isFilter
-              ? FutureBuilder<List<Product>?>(
-                  future: fc.getFilterProducts(
-                      category: fc.searchItems!.productCategory,
-                      color: fc.searchItems!.colors.first, //show
-                      price: fc.searchItems!.productPrice,
-                      sizes: fc.searchItems!.sizes.first),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    List<Product>? filterList = snapshot.data ?? [];
-
-                    return filterList.isEmpty
-                        ? Center(
-                            child: Text("No items"),
-                          )
-                        : Expanded(
-                            child: ListView.builder(
-                              itemCount: filterList.length,
-                              itemBuilder: (BuildContext ctx, int index) {
-                                return InkWell(
-                                  //show the problems
-                                  onTap: () {},
-                                  child: SizedBox(
-                                      height: 100.h,
-                                      width: Get.width,
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              height: 100.h,
-                                              width: 100.w,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.r),
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      filterList[index]
-                                                          .productImages
-                                                          .first),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 20.h),
-                                            Expanded(
-                                              child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Container(
-                                                            height: 28.h,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: filterList[
-                                                                              index]
-                                                                          .productTag ==
-                                                                      Tagtype
-                                                                          .trending
-                                                                  ? CustomColors
-                                                                      .kTrendingBlue
-                                                                  : filterList[index]
-                                                                              .productTag ==
-                                                                          Tagtype
-                                                                              .discount
-                                                                      ? CustomColors
-                                                                          .kdarkred
-                                                                      : filterList[index].productTag ==
-                                                                              Tagtype
-                                                                                  .bestseller
-                                                                          ? CustomColors
-                                                                              .kgreen
-                                                                          : CustomColors
-                                                                              .knewblue,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.r),
-                                                            ),
-                                                            child: Center(
-                                                              child: Padding(
-                                                                padding: EdgeInsets
-                                                                    .fromLTRB(
-                                                                        12.w,
-                                                                        2.h,
-                                                                        12.w,
-                                                                        2.h),
-                                                                child: Text(
-                                                                  filterList[
-                                                                          index]
-                                                                      .productTag
-                                                                      .name
-                                                                      .toString(),
-                                                                  style: CustomTextStyles
-                                                                      .kBold12
-                                                                      .copyWith(
-                                                                          color:
-                                                                              CustomColors.kWhite),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          const Spacer(),
-                                                          FavouriteButton(
-                                                            onPressed: () {},
-                                                            isFavourite:
-                                                                CustomColors
-                                                                    .kDivider,
-                                                          ),
-                                                        ]),
-                                                    SizedBox(height: 11.h),
-                                                    Text(
-                                                      filterList[index]
-                                                          .productName,
-                                                      style: CustomTextStyles
-                                                          .kBold12
-                                                          .copyWith(
-                                                              color: CustomColors
-                                                                  .kprimarylight),
-                                                    ),
-                                                    SizedBox(height: 4.h),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          '\$${filterList[index].productPrice}',
-                                                          style: CustomTextStyles
-                                                              .kBold14
-                                                              .copyWith(
-                                                                  color: CustomColors
-                                                                      .kbrandblue),
-                                                        ),
-                                                        SizedBox(width: 8.w),
-                                                        Text(
-                                                          '\$${filterList[index].oldPrice}',
-                                                          style:
-                                                              CustomTextStyles
-                                                                  .kMedium14
-                                                                  .copyWith(
-                                                            color: CustomColors
-                                                                .kGrey,
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .lineThrough,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ]),
-                                            ),
-                                          ])),
-                                );
-                              },
-                            ),
+          Expanded(
+            child: fc.searching == true
+                ? Center(
+                    child: Text("Searching, please wait...",
+                        style: CustomTextStyles.kBold20))
+                : _results.isEmpty
+                    ? Center(
+                        child: Text("No results found.",
+                            style: CustomTextStyles.kBold20))
+                    : ListView.separated(
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: 10.h),
+                        itemCount: _results.length,
+                        itemBuilder: (BuildContext ctx, int index) {
+                          Product snap = Product.fromAlgolia(_results[index]);
+                          return ProductSaleCard(
+                            onTap: () {
+                              Get.to(() => DetailProductScreen(product: snap));
+                            },
+                            favoriteCallBack: () {},
+                            isFavourite: CustomColors.kDivider,
+                            product: snap,
                           );
-                  })
-              : Expanded(
-                  child: fc.searching == true
-                      ? Center(
-                          child: Text(
-                            "Searching, please wait...",
-                            style: CustomTextStyles.kBold20,
-                          ),
-                        )
-                      : _results.isEmpty
-                          ? Center(
-                              child: Text(
-                                "No results found.",
-                                style: CustomTextStyles.kBold20,
-                              ),
-                            )
-                          : ListView.builder(
-                              itemCount: _results.length,
-                              itemBuilder: (BuildContext ctx, int index) {
-                                AlgoliaObjectSnapshot snap = _results[index];
-                                return InkWell(
-                                  onTap: () {},
-                                  child: SizedBox(
-                                      height: 100.h,
-                                      width: Get.width,
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              height: 100.h,
-                                              width: 100.w,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.r),
-                                                image: DecorationImage(
-                                                  image: NetworkImage(snap
-                                                      .data['productImages']
-                                                      .first),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 20.h),
-                                            Expanded(
-                                              child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Container(
-                                                            height: 28.h,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: snap.data[
-                                                                          'productTag'] ==
-                                                                      Tagtype
-                                                                          .trending
-                                                                  ? CustomColors
-                                                                      .kTrendingBlue
-                                                                  : snap.data['productTag'] ==
-                                                                          Tagtype
-                                                                              .discount
-                                                                      ? CustomColors
-                                                                          .kdarkred
-                                                                      : snap.data['productTag'] ==
-                                                                              Tagtype
-                                                                                  .bestseller
-                                                                          ? CustomColors
-                                                                              .kgreen
-                                                                          : CustomColors
-                                                                              .knewblue,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.r),
-                                                            ),
-                                                            child: Center(
-                                                              child: Padding(
-                                                                padding: EdgeInsets
-                                                                    .fromLTRB(
-                                                                        12.w,
-                                                                        2.h,
-                                                                        12.w,
-                                                                        2.h),
-                                                                child: Text(
-                                                                  snap.data[
-                                                                          'productTag']
-                                                                      .toString(),
-                                                                  style: CustomTextStyles
-                                                                      .kBold12
-                                                                      .copyWith(
-                                                                          color:
-                                                                              CustomColors.kWhite),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          const Spacer(),
-                                                          FavouriteButton(
-                                                            onPressed: () {},
-                                                            isFavourite:
-                                                                CustomColors
-                                                                    .kDivider,
-                                                          ),
-                                                        ]),
-                                                    SizedBox(height: 11.h),
-                                                    Text(
-                                                      snap.data['productName'],
-                                                      style: CustomTextStyles
-                                                          .kBold12
-                                                          .copyWith(
-                                                              color: CustomColors
-                                                                  .kprimarylight),
-                                                    ),
-                                                    SizedBox(height: 4.h),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          '\$${snap.data['productPrice']}',
-                                                          style: CustomTextStyles
-                                                              .kBold14
-                                                              .copyWith(
-                                                                  color: CustomColors
-                                                                      .kbrandblue),
-                                                        ),
-                                                        SizedBox(width: 8.w),
-                                                        Text(
-                                                          '\$${snap.data['oldPrice']}',
-                                                          style:
-                                                              CustomTextStyles
-                                                                  .kMedium14
-                                                                  .copyWith(
-                                                            color: CustomColors
-                                                                .kGrey,
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .lineThrough,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ]),
-                                            ),
-                                          ])),
-                                );
-                              },
-                            ),
-                )
+                        },
+                      ),
+          )
         ]),
       ));
     });
@@ -418,14 +106,12 @@ class _SearchScreenState extends State<SearchScreen> {
   List<AlgoliaObjectSnapshot> _results = [];
 
   _search() async {
-    fc.setSearch = true;
+    fc.setSearch = false;
     AlgoliaQuery query = AlgoliaApplication.algolia
         .index('document')
         .query(_searchController.text)
         .setOffset(0)
         .setHitsPerPage(25);
-
-    // query = query.search(_searchController.text);
     _results = (await query.getObjects()).hits;
   }
 

@@ -39,6 +39,7 @@ dependencies:
   cloud_functions: ^3.3.6
   awesome_notifications: ^0.6.21
   firebase_messaging: ^13.0.0
+  async: ^2.8.2
 
 
 dev_dependencies: 

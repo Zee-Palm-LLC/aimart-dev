@@ -1,7 +1,7 @@
 import 'package:aimart_dev/app/data/helper/product_category.dart';
 import 'package:aimart_dev/app/modules/home/controllers/product_controller.dart';
 import 'package:aimart_dev/app/modules/home/views/discover/detail_product_screen.dart';
-import 'package:aimart_dev/app/modules/home/views/notification.dart/notification_screen.dart';
+import 'package:async/async.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   UserController uc = Get.find<UserController>();
   ProductController pc = Get.find<ProductController>();
   int selectedIndex = 0;
+  final AsyncMemoizer dCMemorizer = AsyncMemoizer();
 
   Rx<ProductCategory> _selectedCategory = ProductCategory.all.obs;
   ProductCategory get selectedCategory => _selectedCategory.value;
@@ -91,7 +92,7 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.only(right: 28.w),
               child: InkWell(
                 onTap: () {
-                  // Get.to(() => NotificationScreen());
+                  //  Get.to(() => NotificationScreen());
                 },
                 child: Stack(
                   alignment: Alignment.center,
@@ -322,10 +323,10 @@ class _HomePageState extends State<HomePage> {
                               future: pc.getFilteredProducts(
                                   category: selectedCategory),
                               builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
+                                if (!snapshot.hasData) {
                                   return const Center(
-                                      child: CircularProgressIndicator());
+                                    child: Text("No Product"),
+                                  );
                                 }
                                 List<Product>? categoriesList = snapshot.data!;
                                 return ListView.separated(

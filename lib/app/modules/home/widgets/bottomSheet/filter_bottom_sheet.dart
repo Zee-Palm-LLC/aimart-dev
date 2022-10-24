@@ -2,11 +2,10 @@
 
 import 'package:aimart_dev/app/modules/home/controllers/filter_controller.dart';
 import 'package:aimart_dev/app/modules/home/models/product_model.dart';
-import 'package:aimart_dev/app/modules/home/widgets/buttons/buttons.dart';
+import 'package:aimart_dev/app/modules/home/views/search/search_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:optimized_cached_image/optimized_cached_image.dart';
 
 import '../../../../data/constants/constants.dart';
 import '../../../../data/helper/product_category.dart';
@@ -99,8 +98,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                                 _selectedCategory.value =
                                     ProductCategory.values[index];
                                 _selectedCategoryIndex.value = index;
-                                print(selectedCategoryIndex);
-                                print(selectedCategory.toString());
+                                setState(() {});
                               },
                               title: ProductCategory
                                   .values[index].name.capitalizeFirst
@@ -199,6 +197,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                         value: _value.value,
                         onChanged: (value) {
                           _value.value = value;
+                          setState(() {});
                         },
                       );
                     }),
@@ -271,7 +270,6 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: PrimaryButton(
                         onPressed: () {
-                          Get.back();
                           fc.setSearchItem = Product(
                               productId: '',
                               productName: '',
@@ -284,6 +282,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                               colors: [colorNames[selectedColor]],
                               sizes: [size[selectedSize]]);
                           fc.setFilter = true;
+                          Get.to(() => SearchResultScreen());
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

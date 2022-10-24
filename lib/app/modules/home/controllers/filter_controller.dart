@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:optimized_cached_image/optimized_cached_image.dart';
-
 import '../../../data/helper/product_category.dart';
 import '../../../services/database_services.dart';
 import '../models/product_model.dart';

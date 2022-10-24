@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:algolia/algolia.dart';
+
 import '../../../data/helper/product_category.dart';
 import 'rating_model.dart';
 
@@ -71,4 +73,22 @@ class Product {
 
   factory Product.fromJson(String source) =>
       Product.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  factory Product.fromAlgolia(AlgoliaObjectSnapshot snapshot) {
+    return Product(
+        productId: snapshot.data['productId'],
+        productName: snapshot.data['productName'],
+        productType: snapshot.data['productType'],
+        productPrice: snapshot.data['productPrice'],
+        productCategory:
+            ProductCategory.values[snapshot.data['productCategory']],
+        productImages: List<String>.from(
+            (snapshot.data['productImages'] as List<dynamic>)),
+        productTag: Tagtype.values[snapshot.data['productTag']],
+        description: snapshot.data['description'],
+        colors: List<String>.from((snapshot.data['colors'] as List<dynamic>)),
+        sizes: List<String>.from((snapshot.data['sizes'] as List<dynamic>)),
+        oldPrice: snapshot.data['oldPrice'],
+        rating: snapshot.data['rating']);
+  }
 }

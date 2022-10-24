@@ -25,10 +25,8 @@ class ProductController extends GetxController {
     });
   }
 
-//ab krlo gy ? sai h lkn aqib bahi all ma sari categories dalni h databse ma ll, theek hy >smjhy?g t
   Future<List<Product>?> getFilteredProducts(
       {required ProductCategory category}) async {
-    //kya update hota database me? integer?g
     try {
       List<Product> products = [];
       var docs = category == ProductCategory.all

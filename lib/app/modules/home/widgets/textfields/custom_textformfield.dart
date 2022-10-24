@@ -14,8 +14,10 @@ class CustomTextFormField extends StatefulWidget {
   final String? Function(String?)? validator;
   final Function(String)? onChange;
   final List<TextInputFormatter>? inputFormatter;
+  final FocusNode? focusNode;
   CustomTextFormField({
     Key? key,
+    this.focusNode,
     this.inputFormatter,
     required this.controller,
     required this.isPasswordField,
@@ -38,6 +40,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     return TextFormField(
       controller: widget.controller,
       validator: widget.validator,
+      focusNode: widget.focusNode,
       inputFormatters: widget.inputFormatter,
       onChanged: widget.onChange,
       textInputAction: widget.textInputAction,
