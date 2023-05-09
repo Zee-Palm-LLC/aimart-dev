@@ -1,57 +1,34 @@
 {
   "project_info": {
-    "project_number": "396141656475",
-    "project_id": "ai-mart-4154b",
-    "storage_bucket": "ai-mart-4154b.appspot.com"
+    "project_number": "985249804118",
+    "project_id": "aimart-9d86d",
+    "storage_bucket": "aimart-9d86d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:396141656475:android:548599285f6a4f7380c93e",
+        "mobilesdk_app_id": "1:985249804118:android:6558140c685157b637b0f7",
         "android_client_info": {
           "package_name": "com.example.aimart_dev"
         }
       },
       "oauth_client": [
         {
-          "client_id": "396141656475-84586d1m4m8khir9095r29cilukidc2f.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.aimart_dev",
-            "certificate_hash": "cc49377b1adc70f891949ffaa19d418fb395dbd0"
-          }
-        },
-        {
-          "client_id": "396141656475-nnu1850l7rm31lfive7b75k66d7m4n8g.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.aimart_dev",
-            "certificate_hash": "118e9b47f6a8061b6cff2ebf6b0daa84337e1320"
-          }
-        },
-        {
-          "client_id": "396141656475-apnk5pjn4dqc0tnqad4kcnhslsn8lsuk.apps.googleusercontent.com",
+          "client_id": "985249804118-4c1r12vacgj4r1n1b6nbqp7mesevsaa3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAtpoS9WhfHnJd8tPRYTlw76yktdlnnz8o"
+          "current_key": "AIzaSyBPSeY_nTQLvq16mOq7zU8QMjdAkPQtdzI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "396141656475-apnk5pjn4dqc0tnqad4kcnhslsn8lsuk.apps.googleusercontent.com",
+              "client_id": "985249804118-4c1r12vacgj4r1n1b6nbqp7mesevsaa3.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "396141656475-n9ceg81ihio2n2k363db6f54dk41rt0i.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.aimartDev"
-              }
             }
           ]
         }

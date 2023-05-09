@@ -25,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -47,29 +44,40 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCcu2Y-TxUv5eSKFXGTi1BTG-ywm2DIn-Y',
-    appId: '1:396141656475:web:f17a1edc13efc64780c93e',
-    messagingSenderId: '396141656475',
-    projectId: 'ai-mart-4154b',
-    authDomain: 'ai-mart-4154b.firebaseapp.com',
-    storageBucket: 'ai-mart-4154b.appspot.com',
+    apiKey: 'AIzaSyAY4kZzuCL_J-fbot3tYgeOwduxidetC1s',
+    appId: '1:985249804118:web:da4271d1e4c3b97d37b0f7',
+    messagingSenderId: '985249804118',
+    projectId: 'aimart-9d86d',
+    authDomain: 'aimart-9d86d.firebaseapp.com',
+    storageBucket: 'aimart-9d86d.appspot.com',
+    measurementId: 'G-4S9DZ9XXG1',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAtpoS9WhfHnJd8tPRYTlw76yktdlnnz8o',
-    appId: '1:396141656475:android:548599285f6a4f7380c93e',
-    messagingSenderId: '396141656475',
-    projectId: 'ai-mart-4154b',
-    storageBucket: 'ai-mart-4154b.appspot.com',
+    apiKey: 'AIzaSyBPSeY_nTQLvq16mOq7zU8QMjdAkPQtdzI',
+    appId: '1:985249804118:android:6558140c685157b637b0f7',
+    messagingSenderId: '985249804118',
+    projectId: 'aimart-9d86d',
+    storageBucket: 'aimart-9d86d.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCMQUMCC1TViJ2PmqaK4SWTif48CQ-APN8',
-    appId: '1:396141656475:ios:71f9f82c4f7389e380c93e',
-    messagingSenderId: '396141656475',
-    projectId: 'ai-mart-4154b',
-    storageBucket: 'ai-mart-4154b.appspot.com',
-    iosClientId: '396141656475-n9ceg81ihio2n2k363db6f54dk41rt0i.apps.googleusercontent.com',
+    apiKey: 'AIzaSyD_JlJ10QJoDxS-m08K3dkmVJRFS_1zmPA',
+    appId: '1:985249804118:ios:427bfb0c706e76e337b0f7',
+    messagingSenderId: '985249804118',
+    projectId: 'aimart-9d86d',
+    storageBucket: 'aimart-9d86d.appspot.com',
+    iosClientId: '985249804118-oufg6ivatd883ut2c0f0qfa5qajq6va6.apps.googleusercontent.com',
+    iosBundleId: 'com.example.aimartDev',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyD_JlJ10QJoDxS-m08K3dkmVJRFS_1zmPA',
+    appId: '1:985249804118:ios:427bfb0c706e76e337b0f7',
+    messagingSenderId: '985249804118',
+    projectId: 'aimart-9d86d',
+    storageBucket: 'aimart-9d86d.appspot.com',
+    iosClientId: '985249804118-oufg6ivatd883ut2c0f0qfa5qajq6va6.apps.googleusercontent.com',
     iosBundleId: 'com.example.aimartDev',
   );
 }

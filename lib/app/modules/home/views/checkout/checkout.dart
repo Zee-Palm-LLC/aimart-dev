@@ -60,7 +60,7 @@ class CheckOutScreenController extends GetView<PagesController> {
                       },
                       itemCount: pages.length,
                       onPageChanged: (int index) {
-                        // statusController.updateInitialIndex(index);
+                        statusController.updateInitialIndex(index);
                         statusController.updateStatus(index, true);
                       },
                       physics: const NeverScrollableScrollPhysics(),

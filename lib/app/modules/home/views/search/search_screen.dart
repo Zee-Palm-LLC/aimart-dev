@@ -112,6 +112,7 @@ class _SearchScreenState extends State<SearchScreen> {
         .query(_searchController.text)
         .setOffset(0)
         .setHitsPerPage(25);
+
     _results = (await query.getObjects()).hits;
   }
 
